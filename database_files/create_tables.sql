@@ -6,8 +6,8 @@ CREATE TABLE producer_prices (
     year                 SMALLINT     NOT NULL,
     item_code            SMALLINT     NOT NULL,
     item                 VARCHAR(255) NOT NULL,
-    producer_price       NUMERIC(10,4),
-    producer_price_index NUMERIC(10,4),
+    producer_price       NUMERIC(20,8),
+    producer_price_index NUMERIC(20,8),
     CONSTRAINT pk_producer_prices
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -24,7 +24,7 @@ CREATE TABLE production_value (
     year                   SMALLINT     NOT NULL,
     item_code              SMALLINT     NOT NULL,
     item                   VARCHAR(255) NOT NULL,
-    gross_production_value NUMERIC(10,4),
+    gross_production_value NUMERIC(20,8),
     CONSTRAINT pk_production_value
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -41,7 +41,7 @@ CREATE TABLE production_index (
     year                   SMALLINT     NOT NULL,
     item_code              SMALLINT     NOT NULL,
     item                   VARCHAR(255) NOT NULL,
-    gross_production_index NUMERIC(8,4),
+    gross_production_index NUMERIC(20,8),
     CONSTRAINT pk_production_index
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -52,16 +52,16 @@ ALTER TABLE production_index OWNER to postgres;
 
 -- Create a table for trade data and set ownership to postgres
 CREATE TABLE trade (
-    area_code         SMALLINT     NOT NULL,
+    area_code         INTEGER     NOT NULL,
     area              VARCHAR(255) NOT NULL,
-    year_code         SMALLINT     NOT NULL,
-    year              SMALLINT     NOT NULL,
-    item_code         SMALLINT     NOT NULL,
+    year_code         INTEGER     NOT NULL,
+    year              INTEGER     NOT NULL,
+    item_code         INTEGER     NOT NULL,
     item              VARCHAR(255) NOT NULL,
-    export_quantity   NUMERIC(12,4),
-    export_value      NUMERIC(12,4),
-    import_quantity   NUMERIC(12,4),
-    import_value      NUMERIC(12,4),
+    export_quantity   NUMERIC(20,8),
+    export_value      NUMERIC(20,8),
+    import_quantity   NUMERIC(20,8),
+    import_value      NUMERIC(20,8),
     CONSTRAINT pk_trade
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -72,16 +72,16 @@ ALTER TABLE trade OWNER to postgres;
 
 -- Create a table for trade indices data and set ownership to postgres
 CREATE TABLE trade_indices (
-    area_code               SMALLINT     NOT NULL,
+    area_code               INTEGER     NOT NULL,
     area                    VARCHAR(255) NOT NULL,
-    year_code               SMALLINT     NOT NULL,
-    year                    SMALLINT     NOT NULL,
-    item_code               SMALLINT     NOT NULL,
+    year_code               INTEGER     NOT NULL,
+    year                    INTEGER     NOT NULL,
+    item_code               INTEGER     NOT NULL,
     item                    VARCHAR(255) NOT NULL,
-    export_quantity_index   NUMERIC(10,4),
-    export_value_index      NUMERIC(10,4),
-    import_quantity_index   NUMERIC(10,4),
-    import_value_index      NUMERIC(10,4),
+    export_quantity_index   NUMERIC(20,8),
+    export_value_index      NUMERIC(20,8),
+    import_quantity_index   NUMERIC(20,8),
+    import_value_index      NUMERIC(20,8),
     CONSTRAINT pk_trade_indices
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -92,18 +92,18 @@ ALTER TABLE trade_indices OWNER to postgres;
 
 -- Create a table for trade indicators data and set ownership to postgres
 CREATE TABLE trade_indicators (
-    area_code                             SMALLINT     NOT NULL,
+    area_code                             INTEGER     NOT NULL,
     area                                  VARCHAR(255) NOT NULL,
-    year_code                             SMALLINT     NOT NULL,
-    year                                  SMALLINT     NOT NULL,
-    item_code                             SMALLINT     NOT NULL,
+    year_code                             INTEGER     NOT NULL,
+    year                                  INTEGER     NOT NULL,
+    item_code                             INTEGER     NOT NULL,
     item                                  VARCHAR(255) NOT NULL,
-    export_market_concentration_index     NUMERIC(10,4),
-    import_dependency_ratio               NUMERIC(10,4),
-    import_market_concentration_index     NUMERIC(10,4),
-    revealed_comparative_advantage_index  NUMERIC(10,4),
-    self_sufficiency_ratio                NUMERIC(10,4),
-    terms_of_trade                        NUMERIC(10,4),
+    export_market_concentration_index     NUMERIC(20,8),
+    import_dependency_ratio               NUMERIC(20,8),
+    import_market_concentration_index     NUMERIC(20,8),
+    revealed_comparative_advantage_index  NUMERIC(20,8),
+    self_sufficiency_ratio                NUMERIC(20,8),
+    terms_of_trade                        NUMERIC(20,8),
     CONSTRAINT pk_trade_indicators
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -118,8 +118,8 @@ CREATE TABLE agri_trade_indicators (
     area                                  VARCHAR(255) NOT NULL,
     year_code                             SMALLINT     NOT NULL,
     year                                  SMALLINT     NOT NULL,
-    agri_trade_openness_index             NUMERIC(10,4),
-    share_of_agri_exports_to_GDP          NUMERIC(10,4),
+    agri_trade_openness_index             NUMERIC(20,8),
+    share_of_agri_exports_to_gdp          NUMERIC(20,8),
     CONSTRAINT pk_agri_trade_indicators
         PRIMARY KEY (area_code, year_code)
 );
@@ -136,13 +136,13 @@ CREATE TABLE crop_production (
     year                              SMALLINT     NOT NULL,
     item_code                         SMALLINT     NOT NULL,
     item                              VARCHAR(255) NOT NULL,
-    area_harvested                    NUMERIC(12,4),
-    laying                            NUMERIC(10,4),
-    milk_animals                      NUMERIC(10,4),
-    producing_animals_or_slaughtered  NUMERIC(12,4),
-    production                        NUMERIC(12,4),
-    yield                             NUMERIC(10,4),
-    yield_or_carcass_weight           NUMERIC(10,4),
+    area_harvested                    NUMERIC(20,8),
+    laying                            NUMERIC(20,8),
+    milk_animals                      NUMERIC(20,8),
+    producing_animals_or_slaughtered  NUMERIC(20,8),
+    production                        NUMERIC(20,8),
+    yield                             NUMERIC(20,8),
+    yield_or_carcass_weight           NUMERIC(20,8),
     CONSTRAINT pk_crop_production
         PRIMARY KEY (area_code, year_code, item_code)
 );
@@ -157,12 +157,12 @@ CREATE TABLE cropland_nutrient_balance (
     area                                  VARCHAR(255) NOT NULL,
     year_code                             SMALLINT     NOT NULL,
     year                                  SMALLINT     NOT NULL,
-    cropland_nitrogen_per_unit_area       NUMERIC(10,5),
-    cropland_nitrogen_use_efficiency      NUMERIC(10,5),
-    cropland_phosphorus_per_unit_area     NUMERIC(10,5),
-    cropland_phosphorus_use_efficiency    NUMERIC(10,5),
-    cropland_potassium_per_unit_area      NUMERIC(10,5),
-    cropland_potassium_use_efficiency     NUMERIC(10,5),
+    cropland_nitrogen_per_unit_area       NUMERIC(20,8),
+    cropland_nitrogen_use_efficiency      NUMERIC(20,8),
+    cropland_phosphorus_per_unit_area     NUMERIC(20,8),
+    cropland_phosphorus_use_efficiency    NUMERIC(20,8),
+    cropland_potassium_per_unit_area      NUMERIC(20,8),
+    cropland_potassium_use_efficiency     NUMERIC(20,8),
     CONSTRAINT pk_cropland_nutrient_balance
         PRIMARY KEY (area_code, year_code)
 );
@@ -177,9 +177,9 @@ CREATE TABLE credit_to_agri (
     area                                         VARCHAR(255) NOT NULL,
     year_code                                    SMALLINT     NOT NULL,
     year                                         SMALLINT     NOT NULL,
-    credit_to_ag_forest_fish_2015_USD            NUMERIC(15,8),
-    credit_to_ag_forest_fish_share_totalCredit   NUMERIC(15,8),
-    agri_orientation_index_2015_USD              NUMERIC(15,8),
+    credit_to_ag_forest_fish_2015_usd            NUMERIC(20,8),
+    credit_to_ag_forest_fish_share_totalCredit   NUMERIC(20,8),
+    agri_orientation_index_2015_usd              NUMERIC(20,8),
     CONSTRAINT pk_credit_to_agri
         PRIMARY KEY (area_code, year_code)
 );
@@ -194,9 +194,9 @@ CREATE TABLE annual_population (
     area               VARCHAR(255) NOT NULL,
     year_code          SMALLINT     NOT NULL,
     year               SMALLINT     NOT NULL,
-    rural_population   NUMERIC(12,5),
-    urban_population   NUMERIC(12,5),
-    total_population   NUMERIC(12,5),
+    rural_population   NUMERIC(20,8),
+    urban_population   NUMERIC(20,8),
+    total_population   NUMERIC(20,8),
     CONSTRAINT pk_annual_population
         PRIMARY KEY (area_code, year_code)
 );
@@ -211,14 +211,14 @@ CREATE TABLE economic_indicators (
     area                                      VARCHAR(255) NOT NULL,
     year_code                                 SMALLINT     NOT NULL,
     year                                      SMALLINT     NOT NULL,
-    gross_domestic_product                    NUMERIC(18,8),
-    gross_fixed_capital_formation             NUMERIC(18,8),
-    value_added_ag_forest_fish                NUMERIC(18,8),
-    GDP_annual_growth                         NUMERIC(18,8),
-    GFCF_annual_growth                        NUMERIC(18,8),
-    value_added_ag_forest_fish_annual_growth  NUMERIC(18,8),
-    GFCF_share_in_total_GDP                   NUMERIC(18,8),
-    ag_forest_fish_share_in_total_GDP         NUMERIC(18,8),
+    gross_domestic_product                    NUMERIC(20,8),
+    gross_fixed_capital_formation             NUMERIC(20,8),
+    value_added_ag_forest_fish                NUMERIC(20,8),
+    gdp_annual_growth                         NUMERIC(20,8),
+    gfcf_annual_growth                        NUMERIC(20,8),
+    value_added_ag_forest_fish_annual_growth  NUMERIC(20,8),
+    gfcf_share_in_total_gdp                   NUMERIC(20,8),
+    ag_forest_fish_share_in_total_gdp         NUMERIC(20,8),
     CONSTRAINT pk_economic_indicators
         PRIMARY KEY (area_code, year_code)
 );
@@ -233,15 +233,15 @@ CREATE TABLE emission_indicators (
     area                                      VARCHAR(255) NOT NULL,
     year_code                                 SMALLINT     NOT NULL,
     year                                      SMALLINT     NOT NULL,
-    emission_share_farmgate                   NUMERIC(10,4),
-    emission_share_land_use_change            NUMERIC(10,4),
-    emission_share_pre_and_post_production    NUMERIC(10,4),
-    emission_share_end_to_end_agrifood        NUMERIC(10,4),
-    emission_share_crops                      NUMERIC(10,4),
-    emission_share_livestock                  NUMERIC(10,4),
-    emission_share_IPCC_agriculture           NUMERIC(10,4),
-    emission_share_energy_use                 NUMERIC(10,4),
-    emission_share_agri_waste_mgt             NUMERIC(10,4),
+    emission_share_farmgate                   NUMERIC(20,8),
+    emission_share_land_use_change            NUMERIC(20,8),
+    emission_share_pre_and_post_production    NUMERIC(20,8),
+    emission_share_end_to_end_agrifood        NUMERIC(20,8),
+    emission_share_crops                      NUMERIC(20,8),
+    emission_share_livestock                  NUMERIC(20,8),
+    emission_share_ipcc_agriculture           NUMERIC(20,8),
+    emission_share_energy_use                 NUMERIC(20,8),
+    emission_share_agri_waste_mgt             NUMERIC(20,8),
     CONSTRAINT pk_emission_indicators
         PRIMARY KEY (area_code, year_code)
 );
@@ -256,11 +256,11 @@ CREATE TABLE employment_indicators (
     area                                        VARCHAR(255) NOT NULL,
     year_code                                   SMALLINT     NOT NULL,
     year                                        SMALLINT     NOT NULL,
-    value_added_per_worker                      NUMERIC(12,4),
-    employment_in_agri                          NUMERIC(12,4),
-    agri_employment_share_in_total_employment   NUMERIC(8,4),
-    total_employment_AFS                        NUMERIC(12,4),
-    AFS_employment_share_in_total_employment    NUMERIC(8,4),
+    value_added_per_worker                      NUMERIC(20,8),
+    employment_in_agri                          NUMERIC(20,8),
+    agri_employment_share_in_total_employment   NUMERIC(20,8),
+    total_employment_afs                        NUMERIC(20,8),
+    afs_employment_share_in_total_employment    NUMERIC(20,8),
     CONSTRAINT pk_employment_indicators
         PRIMARY KEY (area_code, year_code)
 );
@@ -275,13 +275,13 @@ CREATE TABLE nitrogen_fertilizer (
     area                                     VARCHAR(255) NOT NULL,
     year_code                                SMALLINT     NOT NULL,
     year                                     SMALLINT     NOT NULL,
-    nitrogen_agri_use                        NUMERIC(12,4),
-    nitrogen_export_quantity                 NUMERIC(12,4),
-    nitrogen_import_quantity                 NUMERIC(12,4),
-    nitrogen_production                      NUMERIC(12,4),
-    nitrogen_use_per_area_of_cropland        NUMERIC(12,4),
-    nitrogen_use_per_capita                  NUMERIC(12,4),
-    nitrogen_use_per_value_of_Ag_production  NUMERIC(12,4),
+    nitrogen_agri_use                        NUMERIC(20,8),
+    nitrogen_export_quantity                 NUMERIC(20,8),
+    nitrogen_import_quantity                 NUMERIC(20,8),
+    nitrogen_production                      NUMERIC(20,8),
+    nitrogen_use_per_area_of_cropland        NUMERIC(20,8),
+    nitrogen_use_per_capita                  NUMERIC(20,8),
+    nitrogen_use_per_value_of_ag_production  NUMERIC(20,8),
     CONSTRAINT pk_nitrogen_fertilizer
         PRIMARY KEY (area_code, year_code)
 );
@@ -296,13 +296,13 @@ CREATE TABLE phosphorus_fertilizer (
     area                                     VARCHAR(255) NOT NULL,
     year_code                                SMALLINT     NOT NULL,
     year                                     SMALLINT     NOT NULL,
-    phosphorus_agri_use                        NUMERIC(12,4),
-    phosphorus_export_quantity                 NUMERIC(12,4),
-    phosphorus_import_quantity                 NUMERIC(12,4),
-    phosphorus_production                      NUMERIC(12,4),
-    phosphorus_use_per_area_of_cropland        NUMERIC(12,4),
-    phosphorus_use_per_capita                  NUMERIC(12,4),
-    phosphorus_use_per_value_of_Ag_production  NUMERIC(12,4),
+    phosphorus_agri_use                        NUMERIC(20,8),
+    phosphorus_export_quantity                 NUMERIC(20,8),
+    phosphorus_import_quantity                 NUMERIC(20,8),
+    phosphorus_production                      NUMERIC(20,8),
+    phosphorus_use_per_area_of_cropland        NUMERIC(20,8),
+    phosphorus_use_per_capita                  NUMERIC(20,8),
+    phosphorus_use_per_value_of_ag_production  NUMERIC(20,8),
     CONSTRAINT pk_phosphorus_fertilizer
         PRIMARY KEY (area_code, year_code)
 );
@@ -317,13 +317,12 @@ CREATE TABLE potassium_fertilizer (
     area                                     VARCHAR(255) NOT NULL,
     year_code                                SMALLINT     NOT NULL,
     year                                     SMALLINT     NOT NULL,
-    potassium_agri_use                        NUMERIC(12,4),
-    potassium_export_quantity                 NUMERIC(12,4),
-    potassium_import_quantity                 NUMERIC(12,4),
-    potassium_production                      NUMERIC(12,4),
-    potassium_use_per_area_of_cropland        NUMERIC(12,4),
-    potassium_use_per_capita                  NUMERIC(12,4),
-    potassium_use_per_value_of_Ag_production  NUMERIC(12,4),
+    potassium_agri_use                        NUMERIC(20,8),
+    potassium_export_quantity                 NUMERIC(20,8),
+    potassium_import_quantity                 NUMERIC(20,8),
+    potassium_use_per_area_of_cropland        NUMERIC(20,8),
+    potassium_use_per_capita                  NUMERIC(20,8),
+    potassium_use_per_value_of_ag_production  NUMERIC(20,8),
     CONSTRAINT pk_potassium_fertilizer
         PRIMARY KEY (area_code, year_code)
 );
@@ -338,11 +337,11 @@ CREATE TABLE foreign_investment (
     area                         VARCHAR(255) NOT NULL,
     year_code                    SMALLINT     NOT NULL,
     year                         SMALLINT     NOT NULL,
-    fdi_ag_forest_fish           NUMERIC(16,8),
-    fdi_food_industry            NUMERIC(16,8),
-    total_FDI_inflows            NUMERIC(16,8),
-    fdi_ag_forest_fish_share     NUMERIC(16,8),
-    fdi_food_industry_share      NUMERIC(16,8),
+    fdi_ag_forest_fish           NUMERIC(20,8),
+    fdi_food_industry            NUMERIC(20,8),
+    total_fdi_inflows            NUMERIC(20,8),
+    fdi_ag_forest_fish_share     NUMERIC(20,8),
+    fdi_food_industry_share      NUMERIC(20,8),
     CONSTRAINT pk_foreign_investment
         PRIMARY KEY (area_code, year_code)
 );
@@ -357,10 +356,10 @@ CREATE TABLE government_investment (
     area                                          VARCHAR(255) NOT NULL,
     year_code                                     SMALLINT     NOT NULL,
     year                                          SMALLINT     NOT NULL,
-    agri_orientation_index_govt_expenditure       NUMERIC(16,8),
-    govt_expenditure_on_Ag                        NUMERIC(16,8),
-    govt_expenditure_on_Ag_forest_fish            NUMERIC(16,8),
-    Ag_forest_fish_as_share_of_total_expenditure  NUMERIC(16,8),
+    agri_orientation_index_govt_expenditure       NUMERIC(20,8),
+    govt_expenditure_on_ag                        NUMERIC(20,8),
+    govt_expenditure_on_ag_forest_fish            NUMERIC(20,8),
+    ag_forest_fish_as_share_of_total_expenditure  NUMERIC(20,8),
     CONSTRAINT pk_government_investment
         PRIMARY KEY (area_code, year_code)
 );
@@ -375,14 +374,14 @@ CREATE TABLE landuse (
     area                       VARCHAR(255) NOT NULL,
     year_code                  SMALLINT     NOT NULL,
     year                       SMALLINT     NOT NULL,
-    area_agri_land             NUMERIC(16,8),
-    area_arable_land           NUMERIC(16,8),
-    area_cropland              NUMERIC(16,8),
-    area_with_irrigation       NUMERIC(16,8),
-    area_permanent_crops       NUMERIC(16,8),
-    area_temporary_crops       NUMERIC(16,8),
-    value_per_unit_agri_land   NUMERIC(16,8),
-    cropland_area_per_capita   NUMERIC(16,8),
+    area_agri_land             NUMERIC(20,8),
+    area_arable_land           NUMERIC(20,8),
+    area_cropland              NUMERIC(20,8),
+    area_with_irrigation       NUMERIC(20,8),
+    area_permanent_crops       NUMERIC(20,8),
+    area_temporary_crops       NUMERIC(20,8),
+    value_per_unit_agri_land   NUMERIC(20,8),
+    cropland_area_per_capita   NUMERIC(20,8),
     CONSTRAINT pk_landuse
         PRIMARY KEY (area_code, year_code)
 );
@@ -393,14 +392,14 @@ ALTER TABLE landuse OWNER to postgres;
 
 -- Create a table for pesticide trade data and set ownership to postgres
 CREATE TABLE pesticide_trade (
-    area_code                        SMALLINT     NOT NULL,
+    area_code                        INTEGER     NOT NULL,
     area                             VARCHAR(255) NOT NULL,
-    year_code                        SMALLINT     NOT NULL,
-    year                             SMALLINT     NOT NULL,
-    total_pesticide_export_quantity  NUMERIC(16,8),
-    total_pesticide_export_value     NUMERIC(16,8),
-    total_pesticide_import_quantity  NUMERIC(16,8),
-    total_pesticide_import_value     NUMERIC(16,8),
+    year_code                        INTEGER     NOT NULL,
+    year                             INTEGER     NOT NULL,
+    total_pesticide_export_quantity  NUMERIC(20,8),
+    total_pesticide_export_value     NUMERIC(20,8),
+    total_pesticide_import_quantity  NUMERIC(20,8),
+    total_pesticide_import_value     NUMERIC(20,8),
     CONSTRAINT pk_pesticide_trade
         PRIMARY KEY (area_code, year_code)
 );
@@ -415,10 +414,10 @@ CREATE TABLE pesticide (
     area                                               VARCHAR(255) NOT NULL,
     year_code                                          SMALLINT     NOT NULL,
     year                                               SMALLINT     NOT NULL,
-    total_pesticide_use_for_agriculture                NUMERIC(16,8),
-    total_pesticide_use_per_area_of_cropland           NUMERIC(16,8),
-    total_pesticide_use_per_capita                     NUMERIC(16,8),
-    total_pesticide_use_per_value_of_agri_production   NUMERIC(16,8),
+    total_pesticide_use_for_agriculture                NUMERIC(20,8),
+    total_pesticide_use_per_area_of_cropland           NUMERIC(20,8),
+    total_pesticide_use_per_capita                     NUMERIC(20,8),
+    total_pesticide_use_per_value_of_agri_production   NUMERIC(20,8),
     CONSTRAINT pk_pesticide
         PRIMARY KEY (area_code, year_code)
 );
@@ -433,11 +432,11 @@ CREATE TABLE temperature_change (
     area                              VARCHAR(255) NOT NULL,
     year_code                         SMALLINT     NOT NULL,
     year                              SMALLINT     NOT NULL,
-    temp_change_Dec_Jan_Feb           NUMERIC(16,8),
-    temp_change_Mar_Apr_May           NUMERIC(16,8),
-    temp_change_Jun_Jul_Aug           NUMERIC(16,8),
-    temp_change_Sep_Oct_Nov           NUMERIC(16,8),
-    temp_change_meteorological_year   NUMERIC(16,8),
+    temp_change_dec_jan_feb           NUMERIC(20,8),
+    temp_change_mar_apr_may           NUMERIC(20,8),
+    temp_change_jun_jul_aug           NUMERIC(20,8),
+    temp_change_sep_oct_nov           NUMERIC(20,8),
+    temp_change_meteorological_year   NUMERIC(20,8),
     CONSTRAINT pk_temperature_change
         PRIMARY KEY (area_code, year_code)
 );

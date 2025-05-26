@@ -29,7 +29,7 @@ file_table_column_map = {
         }
     },
 
-    "production-indices_cleaned.csv": {
+    "production_indices_cleaned.csv": {
         "table": "production_index",
         "column_mapping": {
             'area_code': 'area_code' ,
@@ -100,7 +100,7 @@ file_table_column_map = {
             'year_code': 'year_code',
             'year': 'year',
             'agri_trade_openness_index': 'agri_trade_openness_index',
-            'share_of_agri_exports_to_GDP': 'share_of_agri_exports_to_GDP'
+            'share_of_agri_exports_to_GDP': 'share_of_agri_exports_to_gdp'
         }
     },
 
@@ -124,7 +124,7 @@ file_table_column_map = {
     },
 
     "cropland_nutrient_balance_cleaned.csv": {
-        "table": "agri_trade_indicators",
+        "table": "cropland_nutrient_balance",
         "column_mapping": {
             'area_code': 'area_code' ,
             'area': 'area',
@@ -146,9 +146,9 @@ file_table_column_map = {
             'area': 'area',
             'year_code': 'year_code',
             'year': 'year',
-            'Agri_orientation_index_2015_USD': 'agri_orientation_index_2015_USD',
-            'credit_to_ag_forest_fish_share_totalCredit': 'credit_to_ag_forest_fish_share_totalCredit',
-            'credit_to_ag_forest_fish_2015_USD': 'credit_to_ag_forest_fish_2015_USD'
+            'Agri_orientation_index_2015_USD': 'agri_orientation_index_2015_usd',
+            'credit_to_ag_forest_fish_share_totalCredit': 'credit_to_ag_forest_fish_share_totalcredit',
+            'credit_to_ag_forest_fish_2015_USD': 'credit_to_ag_forest_fish_2015_usd'
         }
     },
 
@@ -175,11 +175,11 @@ file_table_column_map = {
             'gross_domestic_product': 'gross_domestic_product',
             'gross_fixed_capital_formation': 'gross_fixed_capital_formation',
             'value_added_ag_forest_fish': 'value_added_ag_forest_fish',
-            'GDP_annual_growth': 'GDP_annual_growth',
-            'GFCF_annual_growth': 'GFCF_annual_growth',
+            'GDP_annual_growth': 'gdp_annual_growth',
+            'GFCF_annual_growth': 'gfcf_annual_growth',
             'value_added_ag_forest_fish_annual_growth': 'value_added_ag_forest_fish_annual_growth',
-            'GFCF_share_in_total_GDP': 'GFCF_share_in_total_GDP',
-            'ag_forest_fish_share_in_total_GDP': 'ag_forest_fish_share_in_total_GDP'
+            'GFCF_share_in_total_GDP': 'gfcf_share_in_total_gdp',
+            'ag_forest_fish_share_in_total_GDP': 'ag_forest_fish_share_in_total_gdp'
         }
     },
 
@@ -195,14 +195,14 @@ file_table_column_map = {
             'emission_share_livestock': 'emission_share_livestock',
             'emission_share_energy_use': 'emission_share_energy_use',
             'emission_share_farmgate': 'emission_share_farmgate',
-            'emission_share_IPCC_agriculture': 'emission_share_IPCC_agriculture',
+            'emission_share_IPCC_agriculture': 'emission_share_ipcc_agriculture',
             'emission_share_land_use_change': 'emission_share_land_use_change',
             'emission_share_pre_and_post_production': 'emission_share_pre_and_post_production',
             'emission_share_agri_waste_mgt': 'emission_share_agri_waste_mgt'
         }
     },
 
-    "employment_indicators.csv": {
+    "employment_indicators_cleaned.csv": {
         "table": "employment_indicators",
         "column_mapping": {
             'area_code': 'area_code' ,
@@ -211,9 +211,9 @@ file_table_column_map = {
             'year': 'year',
             'value_added_per_worker': 'value_added_per_worker',
             'employment_in_agri': 'employment_in_agri',
-            'AFS_employment_share_in_total_employment': 'AFS_employment_share_in_total_employment',
+            'AFS_employment_share_in_total_employment': 'afs_employment_share_in_total_employment',
             'agri_employment_share_in_total_employment': 'agri_employment_share_in_total_employment',
-            'total_employment_AFS': 'total_employment_AFS'
+            'total_employment_AFS': 'total_employment_afs'
         }
     },
 
@@ -230,7 +230,7 @@ file_table_column_map = {
             'N2_production': 'nitrogen_production',
             'N2_use_per_area_of_cropland': 'nitrogen_use_per_area_of_cropland',
             'N2_use_per_capita': 'nitrogen_use_per_capita',
-            'N2_use_per_value_of_Ag_production': 'nitrogen_use_per_value_of_Ag_production'
+            'N2_use_per_value_of_Ag_production': 'nitrogen_use_per_value_of_ag_production'
         }
     }, 
 
@@ -247,7 +247,7 @@ file_table_column_map = {
             'P2O5_production': 'phosphorus_production',
             'P2O5_use_per_area_of_cropland': 'phosphorus_use_per_area_of_cropland',
             'P2O5_use_per_capita': 'phosphorus_use_per_capita',
-            'P2O5_use_per_value_of_Ag_production': 'phosphorus_use_per_value_of_Ag_production'
+            'P2O5_use_per_value_of_Ag_production': 'phosphorus_use_per_value_of_ag_production'
         }
     },
 
@@ -261,10 +261,9 @@ file_table_column_map = {
             'K2O_for_Ag_use': 'potassium_agri_use',
             'K2O_export_quantity': 'potassium_export_quantity',
             'K2O_import_quantity': 'potassium_import_quantity',
-            'K2O_production': 'potassium_production',
             'K2O_use_per_area_of_cropland': 'potassium_use_per_area_of_cropland',
             'K2O_use_per_capita': 'potassium_use_per_capita',
-            'K2O_use_per_value_of_Ag_production': 'potassium_use_per_value_of_Ag_production'
+            'K2O_use_per_value_of_Ag_production': 'potassium_use_per_value_of_ag_production'
         }
     },
 
@@ -277,7 +276,7 @@ file_table_column_map = {
             'year': 'year',
             'FDI_ag_forest_fish': 'fdi_ag_forest_fish',
             'FDI_food_industry': 'fdi_food_industry',
-            'total_FDI_inflows': 'total_FDI_inflows',
+            'total_FDI_inflows': 'total_fdi_inflows',
             'FDI_ag_forest_fish_share': 'fdi_ag_forest_fish_share',
             'FDI_food_industry_share': 'fdi_food_industry_share'
         }
@@ -291,9 +290,9 @@ file_table_column_map = {
             'year_code': 'year_code',
             'year': 'year',
             'AOI_for_govt_expenditure': 'agri_orientation_index_govt_expenditure',
-            'Govt_expenditure_on_Ag': 'govt_expenditure_on_Ag',
-            'Govt_expenditure_on_Ag_forest_fish': 'govt_expenditure_on_Ag_forest_fish',
-            'Ag_forest_fish_as_share_of_total_expenditure': 'Ag_forest_fish_as_share_of_total_expenditure'
+            'Govt_expenditure_on_Ag': 'govt_expenditure_on_ag',
+            'Govt_expenditure_on_Ag_forest_fish': 'govt_expenditure_on_ag_forest_fish',
+            'Ag_forest_fish_as_share_of_total_expenditure': 'ag_forest_fish_as_share_of_total_expenditure'
         }
     },
 
@@ -350,11 +349,11 @@ file_table_column_map = {
             'area': 'area',
             'year_code': 'year_code',
             'year': 'year',
-            'temp_change_Dec_Jan_Feb': 'temp_change_Dec_Jan_Feb',
-            'temp_change_Jun_Jul_Aug': 'temp_change_Jun_Jul_Aug',
-            'temp_change_Mar_Apr_May': 'temp_change_Mar_Apr_May',
+            'temp_change_Dec_Jan_Feb': 'temp_change_dec_jan_feb',
+            'temp_change_Jun_Jul_Aug': 'temp_change_jun_jul_aug',
+            'temp_change_Mar_Apr_May': 'temp_change_mar_apr_may',
             'temp_change_meteorological_year': 'temp_change_meteorological_year',
-            'temp_change_Sep_Oct_Nov': 'temp_change_Sep_Oct_Nov'
+            'temp_change_Sep_Oct_Nov': 'temp_change_sep_oct_nov'
         }
     }
 }
