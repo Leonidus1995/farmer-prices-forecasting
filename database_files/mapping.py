@@ -1,4 +1,8 @@
+"""
+Custom mappings for each csv file. The dictionary contains the csv file name, 
+target table name, and how csv columns map to table columns.
 
+"""
 
 # Step 1: Create a mapping dictionary
 file_table_column_map = {

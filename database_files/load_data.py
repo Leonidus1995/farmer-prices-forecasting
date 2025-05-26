@@ -1,8 +1,14 @@
+"""
+Python script to load data from multiple csv files with custom mapping.
+
+"""
+
+
 # load required packages
 import os
 import pandas as pd
 from sqlalchemy import create_engine
-from mapping import file_table_column_map
+from mapping import file_table_column_map # importing custom mapping
 
 # PostgreSQL connection 
 engine = create_engine('postgresql+psycopg2://postgres:1995@localhost:5432/faostat_ms_dsci_project')
