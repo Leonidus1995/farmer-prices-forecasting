@@ -71,6 +71,65 @@ All files related to database creation, data loading, and data integration could
 
 
 # 🛠️ Pre-processing and Feature Engineering:
+The integrated dataset, created by merging individual FAOSTAT datasets, initially contained 392,856 rows and 117 features. Among these, 24 features had more than 50% missing values, and 10 of them had over 90% missingness, making them unsuitable for reliable analysis. Meanwhile, 75 features had missing values under 20%, which are more manageable.
+
+![Before pre-processing](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feat_dist_pre_clean.png)
+
+Top 10 Features with >90% Missing Data:
+1. laying – 97.66%
+2. milk_animals – 96.27%
+3. terms_of_trade – 96.19%
+4. import_market_concentration_index – 95.50%
+5. export_market_concentration_index – 95.46%
+6. self_sufficiency_ratio – 95.23%
+7. import_dependency_ratio – 95.23%
+8. revealed_comparative_advantage_index – 94.95%
+9. yield_or_carcass_weight – 92.30%
+10. producing_animals_or_slaughtered – 92.25%
+
+These 10 features were dropped due to the impracticality of imputing such large gaps without introducing bias.
+
+### Strategy for Handling Features with 10–90% Missing Values
+We identified 36 features with missing data between 10% and 90%. Our goal was to preserve as many of them as possible by identifying whether the missingness was concentrated in specific countries or items. Since the dataset contains 166 countries and 202 items, we examined how many of these each feature covered.
+
+For instance, govt_expenditure_on_ag had ~81% missing data but included all 202 items and only 96 countries—indicating country-level gaps. In contrast, some features had data for as few as 51 items, suggesting item-level gaps.
+
+#### Item-Level Filtering
+We first performed item-level filtering to reduce missingness across key features. The goal was to preserve the 36 features with moderate to high missingness (10–90%) by identifying and removing items that contributed most to the data gaps.
+
+The dataset originally included 202 items. We applied a two-step strategy to filter out problematic items:
+
+1. **Removal of Animal-Related Items:**
+We first removed 43 items related to animals and animal products. This decision was based on the observation that several of the top 10 features with >90% missingness (e.g., laying, milk_animals, yield_or_carcass_weight, and producing_animals_or_slaughtered) were exclusively associated with animal-related items. Retaining such items would not meaningfully contribute to analysis and would increase overall sparsity.
+
+2. **Removal of Items with Systematic Missingness:**
+We further removed 25 additional items that consistently lacked data across the 36 features we aimed to preserve. These items had minimal overlap with the retained features and provided little usable information.
+
+By applying this filtering strategy, we retained 134 of the original 202 items, significantly improving data coverage across the selected features. This step was critical in reducing row-level missingness and ensuring more robust model training on the cleaned dataset.
+
+#### Country-Level Filtering
+In addition to filtering items, we also performed country-level filtering to reduce missingness across key features. The goal was to retain as many countries as possible while ensuring data quality.
+
+The dataset originally included 166 countries. We applied a two-step strategy to filter out problematic countries:
+
+1. **Focus on Features with Sufficient Data:** We began by concentrating on features that had data for 100 to 131 countries. To prevent excessive country-level data loss, any features with fewer than 100 countries were dropped.
+
+2. **Removal of Countries with Extensive Missingness:**
+We observed that 117 countries had complete missingness in at least one of 9 crucial features. To strike a balance between retaining countries and ensuring data quality, we removed any country missing all values in at least 5 of these 9 key features.
+
+By applying this filtering strategy, we retained 131 of the original 166 countries, significantly improving data coverage across the selected features. 
+
+#### Final Dataset After Cleaning
+
+The dataset was reduced to 197,147 rows and 100 features.
+
+- 76 features now have missing values under 10%.
+
+- 98 features have missing values under 60%.
+
+This structured reduction minimized data loss while improving the overall quality and reliability of the dataset for modeling.
+
+![After pre-processing](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feat_dist_post_clean.png)
 
 # 🤖 Modeling:
 
