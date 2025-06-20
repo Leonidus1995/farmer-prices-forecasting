@@ -21,3 +21,4 @@ DROP TABLE IF EXISTS temperature_change;
 DROP TABLE IF EXISTS trade;
 DROP TABLE IF EXISTS trade_indicators;
 DROP TABLE IF EXISTS trade_indices;
+

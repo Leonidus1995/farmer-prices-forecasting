@@ -131,6 +131,8 @@ This structured reduction minimized data loss while improving the overall qualit
 
 ![After pre-processing](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feat_dist_post_clean.png)
 
+*Detailed step-by-step information about the data cleaning and pre-processing could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/pre_processing.ipynb).*
+
 # 🤖 Modeling:
 
 # 🧪 Model Evaluation:

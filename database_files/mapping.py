@@ -294,9 +294,8 @@ file_table_column_map = {
             'year_code': 'year_code',
             'year': 'year',
             'AOI_for_govt_expenditure': 'agri_orientation_index_govt_expenditure',
-            'Govt_expenditure_on_Ag': 'govt_expenditure_on_ag',
             'Govt_expenditure_on_Ag_forest_fish': 'govt_expenditure_on_ag_forest_fish',
-            'Ag_forest_fish_as_share_of_total_expenditure': 'ag_forest_fish_as_share_of_total_expenditure'
+            'total_govt_expenditure': 'total_govt_expenditure'
         }
     },
 

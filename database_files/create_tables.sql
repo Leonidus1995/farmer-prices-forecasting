@@ -357,9 +357,8 @@ CREATE TABLE government_investment (
     year_code                                     SMALLINT     NOT NULL,
     year                                          SMALLINT     NOT NULL,
     agri_orientation_index_govt_expenditure       NUMERIC(20,8),
-    govt_expenditure_on_ag                        NUMERIC(20,8),
     govt_expenditure_on_ag_forest_fish            NUMERIC(20,8),
-    ag_forest_fish_as_share_of_total_expenditure  NUMERIC(20,8),
+    total_govt_expenditure                        NUMERIC(20,8),
     CONSTRAINT pk_government_investment
         PRIMARY KEY (area_code, year_code)
 );

@@ -11,3 +11,7 @@ cleaned_datasets/
 integrated_data.csv
 
 pre_processed_data.csv
+
+FAOSTAT_region_wise_countries.csv
+
+*.csv
