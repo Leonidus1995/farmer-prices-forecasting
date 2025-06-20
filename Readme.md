@@ -71,7 +71,7 @@ All files related to database creation, data loading, and data integration could
 
 
 # 🛠️ Pre-processing and Feature Engineering:
-The integrated dataset, created by merging individual FAOSTAT datasets, initially contained 392,856 rows and 117 features. Among these, 24 features had more than 50% missing values, and 10 of them had over 90% missingness, making them unsuitable for reliable analysis. Meanwhile, 75 features had missing values under 20%, which are more manageable.
+The integrated dataset, created by merging individual FAOSTAT datasets, initially contained 392,856 rows and 116 features. Among these, 22 features had more than 50% missing values, and 10 of them had over 90% missingness, making them unsuitable for reliable analysis. Meanwhile, 75 features had missing values under 20%, which are more manageable.
 
 ![Before pre-processing](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feat_dist_pre_clean.png)
 
@@ -90,12 +90,12 @@ Top 10 Features with >90% Missing Data:
 These 10 features were dropped due to the impracticality of imputing such large gaps without introducing bias.
 
 ### Strategy for Handling Features with 10–90% Missing Values
-We identified 36 features with missing data between 10% and 90%. Our goal was to preserve as many of them as possible by identifying whether the missingness was concentrated in specific countries or items. Since the dataset contains 166 countries and 202 items, we examined how many of these each feature covered.
+We identified 35 features with missing data between 10% and 90%. Our goal was to preserve as many of them as possible by identifying whether the missingness was concentrated in specific countries or items. Since the dataset contains 166 countries and 202 items, we examined how many of these each feature covered.
 
-For instance, govt_expenditure_on_ag had ~81% missing data but included all 202 items and only 96 countries—indicating country-level gaps. In contrast, some features had data for as few as 51 items, suggesting item-level gaps.
+For example, the column "fdi_ag_forest_fish" has approximately 63% missing values. Upon inspection, it has data for only 101 countries but covers almost all items, suggesting that the missingness is primarily due to the absence of country-level data.
 
-#### Item-Level Filtering
-We first performed item-level filtering to reduce missingness across key features. The goal was to preserve the 36 features with moderate to high missingness (10–90%) by identifying and removing items that contributed most to the data gaps.
+### Item-Level Filtering
+We first performed item-level filtering to reduce missingness across key features. The goal was to preserve the 35 features with moderate to high missingness (10–90%) by identifying and removing items that contributed most to the data gaps.
 
 The dataset originally included 202 items. We applied a two-step strategy to filter out problematic items:
 
@@ -107,25 +107,26 @@ We further removed 25 additional items that consistently lacked data across the 
 
 By applying this filtering strategy, we retained 134 of the original 202 items, significantly improving data coverage across the selected features. This step was critical in reducing row-level missingness and ensuring more robust model training on the cleaned dataset.
 
-#### Country-Level Filtering
+### Country-Level Filtering
 In addition to filtering items, we also performed country-level filtering to reduce missingness across key features. The goal was to retain as many countries as possible while ensuring data quality.
 
 The dataset originally included 166 countries. We applied a two-step strategy to filter out problematic countries:
 
-1. **Focus on Features with Sufficient Data:** We began by concentrating on features that had data for 100 to 131 countries. To prevent excessive country-level data loss, any features with fewer than 100 countries were dropped.
+1. **Focus on Features with Sufficient Data:** 
+We began by concentrating on features that had data for 100 to 131 countries. To prevent excessive country-level data loss, any features with fewer than 100 countries were dropped.
 
 2. **Removal of Countries with Extensive Missingness:**
-We observed that 117 countries had complete missingness in at least one of 9 crucial features. To strike a balance between retaining countries and ensuring data quality, we removed any country missing all values in at least 5 of these 9 key features.
+We observed that 109 countries had complete missingness in at least one of 4 crucial features. To strike a balance between retaining countries and ensuring data quality, we removed any country missing all values in at least 2 of these 4 key features.
 
-By applying this filtering strategy, we retained 131 of the original 166 countries, significantly improving data coverage across the selected features. 
+By applying this filtering strategy, we retained 124 of the original 166 countries, significantly improving data coverage across the selected features. 
 
-#### Final Dataset After Cleaning
+### Final Dataset After Cleaning
 
-The dataset was reduced to 197,147 rows and 100 features.
+The dataset was reduced to 189,304 rows and 98 features.
 
 - 76 features now have missing values under 10%.
 
-- 98 features have missing values under 60%.
+- 94 features have missing values under 40%.
 
 This structured reduction minimized data loss while improving the overall quality and reliability of the dataset for modeling.
 
