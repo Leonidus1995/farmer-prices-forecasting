@@ -147,20 +147,18 @@ can be partially addressed by leveraging the following related variables:
 **agri_orientation_index_govt_expenditure, ag_forest_fish_share_in_total_gdp, and total_govt_expenditure**.
 
 The Agricultural Orientation Index (AOI) for governmental expenditure is defined as:
-$$
-AOI = \frac{\text{Agriculture's share of government expenditure}}{\text{Agriculture's share of GDP}}
-$$
 
-And, 
-$$
-\text{Agriculture's share of government expenditure} = \frac{\text{govt\_expenditure\_on\_ag\_forest\_fish}}{\text{total\_govt\_expenditure}}
-$$
+AOI = (Agriculture's share of government expenditure) / (Agriculture's share of GDP)
+
+where, 
+Agriculture's share of government expenditure =
+(govt_expenditure_on_ag_forest_fish) / (total_govt_expenditure)
 
 Hence, 
-$$
-\text{govt\_expenditure\_on\_ag\_forest\_fish} = \\
-\text{(agri\_orientation\_index\_govt\_expenditure)} \times \text{(ag\_forest\_fish\_share\_in\_total\_gdp)} \times \text{(total\_govt\_expenditure)}
-$$
+govt_expenditure_on_ag_forest_fish =
+(agri_orientation_index_govt_expenditure) ×
+(ag_forest_fish_share_in_total_gdp) ×
+(total_govt_expenditure)
 
 After estimate missing values in 'govt_expenditure_on_ag_forest_fish' using the formula above, we were able to reduce the amount of missing data in feature 'govt_expenditure_on_ag_forest_fish' from 47.79% to 32.34%.
 
