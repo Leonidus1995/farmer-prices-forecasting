@@ -134,6 +134,44 @@ This structured reduction minimized data loss while improving the overall qualit
 
 *Detailed step-by-step information about the data cleaning and pre-processing could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/pre_processing.ipynb).*
 
+## Data Imputation
+After data cleaning, the five features with the highest proportion of missing data are: 
+- fdi_ag_forest_fish (57%), 
+- govt_expenditure_on_ag_forest_fish (47.79%), 
+- producer_price (44.67%), 
+- credit_to_ag_forest_fish_2015_usd (39.9%), and 
+- afs_employment_share_in_total_employment (38.79%) 
+
+Among these, the missing values in the **govt_expenditure_on_ag_forest_fish** column 
+can be partially addressed by leveraging the following related variables: 
+**agri_orientation_index_govt_expenditure, ag_forest_fish_share_in_total_gdp, and total_govt_expenditure**.
+
+The Agricultural Orientation Index (AOI) for governmental expenditure is defined as:
+$$
+AOI = \frac{\text{Agriculture's share of government expenditure}}{\text{Agriculture's share of GDP}}
+$$
+
+And, 
+$$
+\text{Agriculture's share of government expenditure} = \frac{\text{govt\_expenditure\_on\_ag\_forest\_fish}}{\text{total\_govt\_expenditure}}
+$$
+
+Hence, 
+$$
+\text{govt\_expenditure\_on\_ag\_forest\_fish} = \\
+\text{(agri\_orientation\_index\_govt\_expenditure)} \times \text{(ag\_forest\_fish\_share\_in\_total\_gdp)} \times \text{(total\_govt\_expenditure)}
+$$
+
+After estimate missing values in 'govt_expenditure_on_ag_forest_fish' using the formula above, we were able to reduce the amount of missing data in feature 'govt_expenditure_on_ag_forest_fish' from 47.79% to 32.34%.
+
+Next, the other columns with high missing data have data for 95, 103, 116 countries out of 124 total. In order to reduce the amount of missingness in these columns, we tried to find the common countries that have missing data for all these columns.
+
+Unfortunately, there was limited overlap among these columns in terms of countries 
+with missing data.
+
+
+*Detailed step-by-step information about the data imputation process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
+
 # 🤖 Modeling:
 
 # 🧪 Model Evaluation:
