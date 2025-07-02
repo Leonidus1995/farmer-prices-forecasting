@@ -177,9 +177,10 @@ CREATE TABLE credit_to_agri (
     area                                         VARCHAR(255) NOT NULL,
     year_code                                    SMALLINT     NOT NULL,
     year                                         SMALLINT     NOT NULL,
-    credit_to_ag_forest_fish_2015_usd            NUMERIC(20,8),
-    credit_to_ag_forest_fish_share_totalCredit   NUMERIC(20,8),
-    agri_orientation_index_2015_usd              NUMERIC(20,8),
+    credit_to_ag_forest_fish                     NUMERIC(20,8),
+    credit_to_ag_forest_fish_share_total_credit  NUMERIC(20,8),
+    aoi_credit_to_ag_forest_fish                 NUMERIC(20,8),
+    total_credit                                 NUMERIC(20,8),
     CONSTRAINT pk_credit_to_agri
         PRIMARY KEY (area_code, year_code)
 );
@@ -441,3 +442,21 @@ CREATE TABLE temperature_change (
 );
 
 ALTER TABLE temperature_change OWNER to postgres;
+
+-- Create a table for indicator columns and set ownership to postgres
+CREATE TABLE indicator_columns (
+    area_code_M49                                SMALLINT     NOT NULL,
+    area                                         VARCHAR(255) NOT NULL,
+    region                                       VARCHAR(255) NOT NULL,
+    sub_region                                   VARCHAR(255) NOT NULL,
+    european_union_country                       NUMERIC(20,8),
+    least_developed_country                      NUMERIC(20,8),
+    land_locked_developing_country               NUMERIC(20,8),
+    small_island_developing_state                NUMERIC(20,8),
+    low_income_food_deficit_country              NUMERIC(20,8),
+    net_food_importing_developing_country        NUMERIC(20,8),
+    CONSTRAINT pk_indicator_columns
+        PRIMARY KEY (area)
+);
+
+ALTER TABLE indicator_columns OWNER to postgres;

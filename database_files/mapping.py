@@ -150,9 +150,10 @@ file_table_column_map = {
             'area': 'area',
             'year_code': 'year_code',
             'year': 'year',
-            'Agri_orientation_index_2015_USD': 'agri_orientation_index_2015_usd',
-            'credit_to_ag_forest_fish_share_totalCredit': 'credit_to_ag_forest_fish_share_totalcredit',
-            'credit_to_ag_forest_fish_2015_USD': 'credit_to_ag_forest_fish_2015_usd'
+            'AOI_credit_to_ag_forest_fish': 'aoi_credit_to_ag_forest_fish',
+            'credit_to_ag_forest_fish_share': 'credit_to_ag_forest_fish_share_total_credit',
+            'credit_to_ag_forest_fish': 'credit_to_ag_forest_fish',
+            'total_credit': 'total_credit'
         }
     },
 
