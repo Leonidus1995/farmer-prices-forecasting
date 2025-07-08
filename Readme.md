@@ -188,10 +188,7 @@ A value closer to 1 means those variables often missing together.
 
 ![Heatmap temporal missingness](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/heatmap_missing_top30.png)
 
-The matrix plot and heatmap effectively reveal the missingness patterns among the 
-top 30 variables with the highest proportion of missing data. Notably, 6 of the 
-top 9 variables are missing nearly all data during the first decade (1990–2000), 
-including: 
+The matrix plot and temporal heatmap above effectively reveal the missingness patterns among the top 30 variables with the highest proportion of missing data. Notably, 6 of the top 9 variables are missing nearly all data during the first decade (1990–2000), including: 
 
 - 'afs_employment_share_in_total_employment'
 - 'total_employment_afs'
