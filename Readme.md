@@ -90,12 +90,12 @@ Top 10 Features with >90% Missing Data:
 These 10 features were dropped due to the impracticality of imputing such large gaps without introducing bias.
 
 ### Strategy for Handling Features with 10–90% Missing Values
-We identified 35 features with missing data between 10% and 90%. Our goal was to preserve as many of them as possible by identifying whether the missingness was concentrated in specific countries or items. Since the dataset contains 166 countries and 202 items, we examined how many of these each feature covered.
+We identified 36 features with missing data between 10% and 90%. Our goal was to preserve as many of them as possible by identifying whether the missingness was concentrated in specific countries or items. Since the dataset contains 166 countries and 202 items, we examined how many of these each feature covered.
 
 For example, the column "fdi_ag_forest_fish" has approximately 63% missing values. Upon inspection, it has data for only 101 countries but covers almost all items, suggesting that the missingness is primarily due to the absence of country-level data.
 
 ### Item-Level Filtering
-We first performed item-level filtering to reduce missingness across key features. The goal was to preserve the 35 features with moderate to high missingness (10–90%) by identifying and removing items that contributed most to the data gaps.
+We first performed item-level filtering to reduce missingness across key features. The goal was to preserve the 36 features with moderate to high missingness (10–90%) by identifying and removing items that contributed most to the data gaps.
 
 The dataset originally included 202 items. We applied a two-step strategy to filter out problematic items:
 
@@ -116,17 +116,17 @@ The dataset originally included 166 countries. We applied a two-step strategy to
 We began by concentrating on features that had data for 100 to 131 countries. To prevent excessive country-level data loss, any features with fewer than 100 countries were dropped.
 
 2. **Removal of Countries with Extensive Missingness:**
-We observed that 109 countries had complete missingness in at least one of 4 crucial features. To strike a balance between retaining countries and ensuring data quality, we removed any country missing all values in at least 2 of these 4 key features.
+We observed that 71 countries had complete missingness in at least one of the 2 crucial features ('credit_to_ag_forest_fish', 'afs_employment_share_in_total_employment'). To strike a balance between retaining countries and ensuring data quality, we removed any country missing all values in both of these 2 key features.
 
-By applying this filtering strategy, we retained 124 of the original 166 countries, significantly improving data coverage across the selected features. 
+By applying this filtering strategy, we retained 149 of the original 166 countries, significantly improving data coverage across the selected features. 
 
 ### Final Dataset After Cleaning
 
-The dataset was reduced to 189,304 rows and 98 features.
+The dataset was reduced to 211,006 rows and 97 features. We removed the top 17 features with highest proportion of missing data (> 60%).
 
 - 76 features now have missing values under 10%.
 
-- 94 features have missing values under 40%.
+- 90 features have missing values under 40%.
 
 This structured reduction minimized data loss while improving the overall quality and reliability of the dataset for modeling.
 
@@ -134,13 +134,15 @@ This structured reduction minimized data loss while improving the overall qualit
 
 *Detailed step-by-step information about the data cleaning and pre-processing could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/pre_processing.ipynb).*
 
-## Data Imputation
-After data cleaning, the five features with the highest proportion of missing data are: 
-- fdi_ag_forest_fish (57%), 
-- govt_expenditure_on_ag_forest_fish (47.79%), 
-- producer_price (44.67%), 
-- credit_to_ag_forest_fish_2015_usd (39.9%), and 
-- afs_employment_share_in_total_employment (38.79%) 
+## Missing Data Assessment for effective Imputation Strategies
+After data cleaning, the six features with the highest proportion of missing data are:  
+- govt_expenditure_on_ag_forest_fish (50.00%), 
+- producer_price (45.32%),
+- afs_employment_share_in_total_employment (42.63%), 
+- credit_to_ag_forest_fish_share_total_credit (41.29%),
+- credit_to_ag_forest_fish (41.29%), and 
+- aoi_credit_to_ag_forest_fish (41.29%)
+
 
 Among these, the missing values in the **govt_expenditure_on_ag_forest_fish** column 
 can be partially addressed by leveraging the following related variables: 
@@ -160,15 +162,25 @@ govt_expenditure_on_ag_forest_fish =
 (ag_forest_fish_share_in_total_gdp) ×
 (total_govt_expenditure)
 
-After estimate missing values in 'govt_expenditure_on_ag_forest_fish' using the formula above, we were able to reduce the amount of missing data in feature 'govt_expenditure_on_ag_forest_fish' from 47.79% to 32.34%.
+After estimate missing values in 'govt_expenditure_on_ag_forest_fish' using the formula above, we were able to reduce the amount of missing data in feature 'govt_expenditure_on_ag_forest_fish' from 50.00% to 33.36%.
 
-Next, the other columns with high missing data have data for 95, 103, 116 countries out of 124 total. In order to reduce the amount of missingness in these columns, we tried to find the common countries that have missing data for all these columns.
+Next, the other columns with high missing data have data for 118, 123, 129 countries out of 149 total. In order to reduce the amount of missingness in these columns, we tried to find the common countries that have missing data for all these columns.
 
 Unfortunately, there was limited overlap among these columns in terms of countries 
 with missing data.
 
+**Due to the high sparsity in the producer_price column, we opted to remove it from the dataset. Instead, we will focus on forecasting the producer_price_index, which offers more consistent coverage across countries and years.** 
 
-*Detailed step-by-step information about the data imputation process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
+Additionally, we excluded FDI-related columns from the dataset owing to their substantial missingness. However, to retain some measure of foreign investment relevance, we derived a new feature: value_added_aff_per_total_fdi, calculated as the ratio of value_added_ag_forest_fish to total_fdi_inflows for each country-year pair. Both input variables have relatively high data availability, making the resulting ratio more reliable. This new feature serves as an indicator of how the agriculture, forestry, and fisheries sectors contribute to the national economy in relation to foreign direct investment.
+
+Since no further improvement in data completeness is achievable through external sources or transformations, we now proceed to apply data imputation techniques to address the remaining gaps. Before initiating imputation, it is essential to incorporate indicator columns that categorize countries based on geographic (e.g., region, sub_region) and economic attributes (e.g., least_developed_country, european_union_country, low_income_food_deficit_country, etc.).
+
+These groupings are critical for informed imputation, as they enable us to estimate missing values using data from countries with similar geographic and economic profiles. For instance, imputing missing values for an African country using data from European nations would be inappropriate due to the stark differences in regional and developmental contexts. Group-based imputation ensures that such contextual nuances are respected, improving both the validity and reliability of the imputed values.
+
+At this stage, the merged dataset contains 211,006 rows and 106 columns.
+
+
+*Detailed step-by-step information about the missing data assessment process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
 
 # 🤖 Modeling:
 
