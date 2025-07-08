@@ -200,12 +200,7 @@ The matrix plot and temporal heatmap above effectively reveal the missingness pa
 Imputing a large and consistent block of missing values—especially spanning a 
 decade—poses a significant risk of introducing bias and unrealistic trends.
 
-To address this, we decided to proceed with two parallel datasets. The first 
-retains all 106 features but restricts the time span to 2001–2024, thereby 
-avoiding the need to impute the substantial early-decade gaps in the six most 
-problematic features. The second dataset excludes these six features entirely, 
-allowing us to preserve the full temporal coverage from 1991 to 2024 without 
-introducing unreliable imputations. 
+**To address this, we decided to proceed with two parallel datasets. The first retains all 106 features but restricts the time span to 2001–2024, thereby avoiding the need to impute the substantial early-decade gaps in the six most problematic features. The second dataset excludes these six features entirely, allowing us to preserve the full temporal coverage from 1991 to 2024 without introducing unreliable imputations.** 
 
 
 *Detailed step-by-step information about the missing data assessment process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
