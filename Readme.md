@@ -179,6 +179,37 @@ These groupings are critical for informed imputation, as they enable us to estim
 
 At this stage, the merged dataset contains 211,006 rows and 106 columns.
 
+![Missingness correlation heatmap](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/heatmap_top40.png)
+
+The heatmap shows pairwise correlations in missingness across the top 40 variables.
+A value closer to 1 means those variables often missing together. 
+
+![Matrix plot for missingness](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/matrixplot_top30.png)
+
+![Heatmap temporal missingness](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/heatmap_missing_top30.png)
+
+The matrix plot and heatmap effectively reveal the missingness patterns among the 
+top 30 variables with the highest proportion of missing data. Notably, 6 of the 
+top 9 variables are missing nearly all data during the first decade (1990–2000), 
+including: 
+
+- 'afs_employment_share_in_total_employment'
+- 'total_employment_afs'
+- 'agri_orientation_index_govt_expenditure'
+- 'govt_expenditure_on_ag_forest_fish'
+- 'total_govt_expenditure'
+- 'area_temporary_crops'
+
+Imputing a large and consistent block of missing values—especially spanning a 
+decade—poses a significant risk of introducing bias and unrealistic trends.
+
+To address this, we decided to proceed with two parallel datasets. The first 
+retains all 106 features but restricts the time span to 2001–2024, thereby 
+avoiding the need to impute the substantial early-decade gaps in the six most 
+problematic features. The second dataset excludes these six features entirely, 
+allowing us to preserve the full temporal coverage from 1991 to 2024 without 
+introducing unreliable imputations. 
+
 
 *Detailed step-by-step information about the missing data assessment process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
 
