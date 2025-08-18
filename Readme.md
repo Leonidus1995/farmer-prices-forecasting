@@ -213,6 +213,7 @@ Here are the top 13 features with greater than 20% missing values:
 
 ![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_top20_missing_cols.png)
 
+
 # 🤖 Modeling:
 
 # 🧪 Model Evaluation:
