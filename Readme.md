@@ -253,7 +253,42 @@ region or sub-region, information from one country can be used to impute missing
 These patterns are best diagnosed visually, so we will first plotted the 
 country-level variables (independent of item) and explore the data to guide method selection. Following is the subset of item-independent columns that were explored visually:
 
-![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feature_visualization_plot1_dataset_1.png)
+![feature visualization plot-1 dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feature_visualization_plot1_dataset_1.png)
+
+From the plots, area- and population-related variables exhibit approximately 
+constant (at most linear) trends over time. By contrast, variables related to 
+fertilizers, trade (imports/exports), and finance are markedly more volatile 
+and do not follow a stable linear pattern.
+
+
+The dataset contains five columns related to temperature change, each with relatively low missingness (2–3%). These gaps were imputed using the mean temperature change across countries within the same sub-region. Because climate trends are typically regionally consistent, sub-regional averages provide a robust and straightforward basis for filling missing values. For example, countries within Eastern Europe are expected to show broadly similar temperature shifts over time, making this approach appropriate.
+
+Once the temperature change variables were imputed, we addressed shorter gaps of one or two consecutive missing values appearing at the start, middle, or end of time series. In these cases, simple methods such as linear interpolation, last observation carried forward (LOCF), or next observation carried backward (NOCB) were applied. Even if the broader trend is nonlinear, assuming linearity across such small gaps is unlikely to introduce meaningful bias into the analysis.
+
+During exploratory analysis, we observed that the columns 'nitrogen_production' and 'phosphorus_production' contain numerous zero values for certain countries. This pattern is plausible, as smaller economies may not produce these nutrients domestically and instead rely on imports. To handle missing values in these columns, we established the following imputation rules:
+
+Rule 1: If the first non-missing value in a series is 0, all preceding missing values are set to 0.
+
+Rule 2: If the last non-missing value in a series is 0, all subsequent missing values are set to 0.
+
+Rule 3: If more than 50% of the non-missing values in a series are 0, all missing values in that series are set to 0.
+
+At this point, the remaining challenge was to address the large gaps of missing values in the dataset, which required more advanced imputation strategies. Since the data was structured as a multi-panel time series, one possible approach would be to apply time series models to impute missing values within each individual series. However, there are several limitations to this option:
+
+1. **Short length of series:**  Each time series contains only 21 time points, which is quite limited for reliable time series modeling.
+
+2. **High degree of missingness:** Some series are missing values across many time points, and in certain cases, an entire series for a variable is absent. This leaves very few data points to infer from.
+
+3. **Lack of autocorrelation:** Even for series with a reasonable number of observations, time series modeling is not always viable. Autocorrelation must be significant for past values to help predict missing ones. If no autocorrelation is present, imputation essentially reduces to filling values with the mean, which is not informative.
+
+Given these challenges, supervised machine learning models that leverage both cross-sectional information (data across different countries or units) and within-panel information (data within the same series) offer a more promising direction for imputing missing values. This dual perspective allows the model to borrow strength from related variables and countries when individual time series are too sparse.
+
+As shown in the autocorrelation plot (example) below, the absence of meaningful autocorrelation in a sample of series further underscores the limitations of time series–only methods and highlights the need for cross-sectional ML-based approaches.
+
+![autocorrelation plot dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png)
+
+The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for 
+the country- Bosnia and Herzegovina.
 
 # 🤖 Modeling:
 
