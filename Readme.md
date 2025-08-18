@@ -209,10 +209,51 @@ After excluding the decade 1991–2000, the dataset was reduced from 211,006 to 
 
 ![Feature distribution in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feature_distribution_dataset_1.png)
 
-Here are the top 13 features with greater than 20% missing values:
+Here are the top 14 features with greater than 20% missing values:
 
 ![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/top_missing_cols_dataset_1.png)
 
+
+Out of the 155,474 rows, 521 lack values for the target variable, producer_price_index (PPI). These records cannot simply be discarded, as doing so without care would break time-series continuity and introduce inconsistencies. To address this, we first examined missingness patterns within each country–item pair. This exploration revealed systematic gaps that guided our filtering strategy.
+
+We removed country–item pairs that met any of the following criteria:
+
+1. The target variable (PPI) is entirely missing for the series.
+
+2. More than 50% of the target variable values are missing across the series.
+
+3. More than 50% of item-related values (area_harvested, production, yield) are missing.
+
+4. Missing target variable values for one or both of the most recent years (2022–2023).
+
+5. No records at all for the years 2022–2023.
+
+The dataset originally contained 6,753 unique country–item pairs. Applying the above rules led to the removal of 630 pairs that failed to meet the criteria, primarily due to incomplete PPI or item-related data. The final dataset thus includes 147 countries and 130 items, comprising 137,356 rows.
+
+### Imputation of item-independent columns:
+Before imputing, we followed two principles:
+
+1. **Scope by dependency:** Impute country-only variables separately from country-item variables, using the appropriate time series (country level vs. country–item level).
+
+2. **Avoid look-ahead bias:** Perform imputation only using the training window (2001–2021), without using future observations to fill past gaps.
+
+We first imputed the country-only variables (item-independent).
+
+Our imputation strategy should be tailored to each variable’s distribution and 
+temporal pattern. When a variable’s time series is approximately constant or linear, 
+simple methods—such as linear or spline interpolation may suffice. In contrast, 
+if the series exhibits abrupt or random spikes, these simpler approaches are 
+likely inadequate. In those cases, more advanced, model-based methods 
+(e.g., machine-learning imputation) are warranted to leverage both 
+(i) cross-sectional information from related variables (“horizontal” signals) and 
+(ii) the variable’s own temporal structure (“vertical” signals). 
+
+Additionally, when variables show similar trends across countries within the same 
+region or sub-region, information from one country can be used to impute missing values in another. 
+These patterns are best diagnosed visually, so we will first plotted the 
+country-level variables (independent of item) and explore the data to guide method selection. Following is the subset of item-independent columns that were explored visually:
+
+![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feature_visualization_plot1_dataset_1.png)
 
 # 🤖 Modeling:
 
