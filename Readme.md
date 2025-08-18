@@ -120,7 +120,7 @@ We observed that 71 countries had complete missingness in at least one of the 2 
 
 By applying this filtering strategy, we retained 149 of the original 166 countries, significantly improving data coverage across the selected features. 
 
-### Final Dataset After Cleaning
+### Dataset After Initial Cleaning
 
 The dataset was reduced to 211,006 rows and 97 features. We removed the top 17 features with highest proportion of missing data (> 60%).
 
@@ -162,14 +162,13 @@ govt_expenditure_on_ag_forest_fish =
 (ag_forest_fish_share_in_total_gdp) ×
 (total_govt_expenditure)
 
-After estimate missing values in 'govt_expenditure_on_ag_forest_fish' using the formula above, we were able to reduce the amount of missing data in feature 'govt_expenditure_on_ag_forest_fish' from 50.00% to 33.36%.
+Applying this approach reduced missingness in govt_expenditure_on_ag_forest_fish from 50.00% to 33.36%. **However, the imputed values diverged substantially from observed data, introducing considerable bias. Consequently, we reverted to the original values and explore alternative strategies for handling the remaining missing data.**
 
 Next, the other columns with high missing data have data for 118, 123, 129 countries out of 149 total. In order to reduce the amount of missingness in these columns, we tried to find the common countries that have missing data for all these columns.
 
-Unfortunately, there was limited overlap among these columns in terms of countries 
-with missing data.
+Unfortunately, there was limited overlap among these columns in terms of countries with missing data.
 
-**Due to the high sparsity in the producer_price column, we opted to remove it from the dataset. Instead, we will focus on forecasting the producer_price_index, which offers more consistent coverage across countries and years.** 
+**Moreover, due to the high sparsity in the 'producer_price' column, we opted to remove it from the dataset. Instead, we will focus on forecasting the 'producer_price_index', which offers more consistent coverage across countries and years.** 
 
 Additionally, we excluded FDI-related columns from the dataset owing to their substantial missingness. However, to retain some measure of foreign investment relevance, we derived a new feature: value_added_aff_per_total_fdi, calculated as the ratio of value_added_ag_forest_fish to total_fdi_inflows for each country-year pair. Both input variables have relatively high data availability, making the resulting ratio more reliable. This new feature serves as an indicator of how the agriculture, forestry, and fisheries sectors contribute to the national economy in relation to foreign direct investment.
 
@@ -188,7 +187,7 @@ A value closer to 1 means those variables often missing together.
 
 ![Heatmap temporal missingness](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/heatmap_missing_top30.png)
 
-The matrix plot and temporal heatmap above effectively reveal the missingness patterns among the top 30 variables with the highest proportion of missing data. Notably, 6 of the top 9 variables are missing nearly all data during the first decade (1990–2000), including: 
+The matrix plot and temporal heatmap above effectively reveal the missingness patterns among the top 30 variables with the highest proportion of missing data. Notably, 6 of the top 9 variables are missing nearly all data during the first decade (1990–2000) and year 2024, including: 
 
 - 'afs_employment_share_in_total_employment'
 - 'total_employment_afs'
@@ -197,13 +196,18 @@ The matrix plot and temporal heatmap above effectively reveal the missingness pa
 - 'total_govt_expenditure'
 - 'area_temporary_crops'
 
-Imputing a large and consistent block of missing values—especially spanning a 
-decade—poses a significant risk of introducing bias and unrealistic trends.
+Imputing a large and consistent block of missing values, especially spanning a decade, poses a significant risk of introducing bias and unrealistic trends.
 
-**To address this, we decided to proceed with two parallel datasets. The first retains all 106 features but restricts the time span to 2001–2024, thereby avoiding the need to impute the substantial early-decade gaps in the six most problematic features. The second dataset excludes these six features entirely, allowing us to preserve the full temporal coverage from 1991 to 2024 without introducing unreliable imputations.** 
+**To address this, we decided to proceed with two parallel datasets. The first retains all 106 features but restricts the time span to 2001–2023, thereby avoiding the need to impute the substantial early-decade gaps in the six most problematic features. The second dataset excludes these six features entirely, allowing us to preserve the full temporal coverage from 1991 to 2023 without introducing unreliable imputations.** 
 
 
 *Detailed step-by-step information about the missing data assessment process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb).*
+
+## Data Imputation: Dataset-1 (2001-2023)
+
+After excluding the decade 1991–2000, the dataset was reduced from 211,006 to 155,474 rows. This filtering substantially lowered the extent of missingness in the feature set. Among the 106 columns, 92 now contain fewer than 15% missing values, while the remaining 14 range between 20% and 32%. Overall, the level of missing data is moderate and well-suited for imputation strategies designed for time-series forecasting.
+
+![Feature distribution in dataset-1]()
 
 # 🤖 Modeling:
 
