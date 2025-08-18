@@ -207,11 +207,11 @@ Imputing a large and consistent block of missing values, especially spanning a d
 
 After excluding the decade 1991–2000, the dataset was reduced from 211,006 to 155,474 rows. This filtering substantially lowered the extent of missingness in the feature set. Among the 106 columns, 92 now contain fewer than 15% missing values, while the remaining 14 range between 20% and 32%. Overall, the level of missing data is moderate and well-suited for imputation strategies designed for time-series forecasting.
 
-![Feature distribution in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_feature_dist.png)
+![Feature distribution in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/feature_distribution_dataset_1.png)
 
 Here are the top 13 features with greater than 20% missing values:
 
-![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_top20_missing_cols.png)
+![top missing features in dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/top_missing_cols_dataset_1.png)
 
 
 # 🤖 Modeling:
