@@ -1,7 +1,7 @@
 # 🌾 Project Overview:
 ### Agricultural Producer Price: Definition and Context
 
-Agricultural producer price—commonly referred to as the farm-gate price—is the amount farmers receive for their products at the point of production, before the goods enter downstream stages such as transportation, storage, processing, or retail distribution. By excluding post-farm costs, this measure reflects the farmer’s actual income per unit of crop or livestock sold. It is therefore a direct indicator of farm profitability and a cornerstone metric for assessing the economic well-being of agricultural producers.
+Agricultural producer price, commonly referred to as the farm-gate price, is the amount farmers receive for their products at the point of production, before the goods enter downstream stages such as transportation, storage, processing, or retail distribution. By excluding post-farm costs, this measure reflects the farmer’s actual income per unit of crop or livestock sold. It is therefore a direct indicator of farm profitability and a cornerstone metric for assessing the economic well-being of agricultural producers.
 
 ### Economic and Policy Significance
 
