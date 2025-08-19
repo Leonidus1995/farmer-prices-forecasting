@@ -1,23 +1,50 @@
 # 🌾 Project Overview:
-Agricultural producer price—also known as farm-gate price refers to the price that farmers receive for selling their agricultural products at the point of production, typically before the products enter the broader market chain. This price excludes costs related to transportation, marketing, storage, and retail. It represents the actual income a farmer earns per unit of crop or livestock sold. 
+### Agricultural Producer Price: Definition and Context
 
-These prices are a key economic indicator, influencing farm profitability, food security, and national agricultural planning. It’s a direct indicator of farm income. 
+Agricultural producer price—commonly referred to as the farm-gate price—is the amount farmers receive for their products at the point of production, before the goods enter downstream stages such as transportation, storage, processing, or retail distribution. By excluding post-farm costs, this measure reflects the farmer’s actual income per unit of crop or livestock sold. It is therefore a direct indicator of farm profitability and a cornerstone metric for assessing the economic well-being of agricultural producers.
 
-### Significance:
-Forecasting producer prices is important because it empowers farmers to make informed production and marketing decisions, supports policymakers in designing effective interventions, and helps stabilize markets. Reliable forecasts also aid in managing food supply chains and guiding investments in the agricultural sector.
+### Economic and Policy Significance
 
-However, forecasting these prices is challenging due to the complex, interdependent, and often non-linear nature of the influencing factors. These include economic trends, climate variability, input costs, trade policies, and socio-political dynamics—many of which vary across crops, countries, and time periods.
+Producer prices serve as a critical signal in the agricultural economy. They influence decisions at multiple levels:
 
-### Objective:
-**In this project, we aim to forecast agricultural producer prices using multi-dimensional datasets from FAOSTAT, leveraging information on economic, environmental, geographic, input-related, and policy factors.**
+- **Farm-level:** guiding production choices, crop allocation, and marketing strategies.
 
-We explore key questions such as:
+- **Policy-level:** informing agricultural support schemes, food security planning, and trade policy design.
 
-- What are the most influential factors driving agricultural producer price trends?
+- **Market-level:** shaping supply chain dynamics and investment flows in the sector.
 
-- How accurately can these prices be forecasted across different regions and crop types?
+Because they are directly tied to farm income, fluctuations in producer prices have cascading effects on food security, market stability, and the sustainability of rural livelihoods.
 
-The intended audience includes farmers, farm managers, agricultural scientists, economists, and policymakers. By generating forward-looking insights, this project aims to improve decision-making at the farm and policy levels, enhance market resilience, and support strategic planning in the agricultural sector.
+### Forecasting Challenges
+
+Despite their importance, producer prices are difficult to forecast. The drivers are numerous, interdependent, and often non-linear, including:
+
+- **Economic factors:** inflation, demand shifts, input costs, and trade flows.
+
+- **Environmental variability:** climate change, extreme weather events, and resource availability.
+
+- **Policy and socio-political influences:** subsidies, tariffs, geopolitical instability, and institutional interventions.
+
+These factors vary not only across countries but also across commodities and time periods, introducing additional complexity.
+
+### Project Objective
+
+This project seeks to forecast agricultural producer prices using multi-dimensional datasets from FAOSTAT. The analysis integrates economic, environmental, geographic, input-related, and policy variables to address two central questions:
+
+1. Which factors most strongly drive producer price dynamics across crops and regions?
+
+2. How accurately can future prices be forecasted using available data and advanced modeling approaches?
+
+### Intended Impact
+
+The outputs of this work are intended for a wide audience, including farmers, agricultural scientists, economists, and policymakers. By producing reliable forecasts, the project aims to:
+
+- Improve decision-making at both farm and policy levels,
+
+- Enhance resilience of agricultural markets, and
+
+- Support long-term strategic planning in food and agriculture.
+
 
 
 # 📊 Data:
