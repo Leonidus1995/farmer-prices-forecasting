@@ -287,8 +287,34 @@ As shown in the autocorrelation plot (example) below, the absence of meaningful 
 
 ![autocorrelation plot dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png)
 
-The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for 
-the country- Bosnia and Herzegovina.
+The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for the country- Bosnia and Herzegovina.
+
+In short, the time series has weak autocorrelation overall, with only a small 
+short-term dependency at lag 1 (and maybe lag 2). After that, it behaves more 
+like noise. This makes classical time series models (like ARIMA) less effective 
+for imputation, since they rely on strong, sustained autocorrelation.
+
+**To impute large gaps of missing data across the dataset, we employ the LightGBM model.** This choice is motivated by several advantages:
+
+1. **Cross-sectional learning:**
+LightGBM can leverage information from related variables (e.g., fertilizer use, production, trade, temperature) across the dataset. This allows the model to “borrow strength” from similar countries, years, or correlated features when a given country’s time series is incomplete.
+
+2. **Capacity for non-linear relationships:**
+Economic and trade variables rarely follow linear trends. LightGBM is well-suited to capture such complex, non-linear interactions without requiring pre-specified functional forms.
+
+3. **Adaptability to mixed data types:**
+The dataset includes categorical variables (countries, regions), continuous measures (production, prices), and semi-seasonal indicators. LightGBM naturally accommodates these heterogeneous inputs.
+
+4. **Tolerance of missingness:**
+As a tree-based method, LightGBM incorporates built-in strategies for handling missing values, reducing the need for extensive pre-cleaning and making it especially suitable for imputation tasks.
+
+5. **Scalability across panels:**
+Because the dataset spans multiple countries and variables, LightGBM can model all panels jointly, exploiting shared patterns rather than treating each time series in isolation.
+
+### Imputation of item-dependent columns:
+
+
+*Detailed step-by-step information about the missing data imputation process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1.ipynb).*
 
 # 🤖 Modeling:
 
