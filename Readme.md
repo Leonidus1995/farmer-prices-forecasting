@@ -266,7 +266,7 @@ Before imputing, we followed two principles:
 
 We first imputed the country-only variables (item-independent).
 
-Our imputation strategy should be tailored to each variable’s distribution and 
+Our imputation strategy is tailored to each variable’s distribution and 
 temporal pattern. When a variable’s time series is approximately constant or linear, 
 simple methods—such as linear or spline interpolation may suffice. In contrast, 
 if the series exhibits abrupt or random spikes, these simpler approaches are 
@@ -288,11 +288,11 @@ fertilizers, trade (imports/exports), and finance are markedly more volatile
 and do not follow a stable linear pattern.
 
 
-The dataset contains five columns related to temperature change, each with relatively low missingness (2–3%). These gaps were imputed using the mean temperature change across countries within the same sub-region. Because climate trends are typically regionally consistent, sub-regional averages provide a robust and straightforward basis for filling missing values. For example, countries within Eastern Europe are expected to show broadly similar temperature shifts over time, making this approach appropriate.
+Moreover, the dataset contains five columns related to temperature change, each with relatively low missingness (2–3%). These gaps were imputed using the mean temperature change across countries within the same sub-region. Because climate trends are typically regionally consistent, sub-regional averages provide a robust and straightforward basis for filling missing values. For example, countries within Eastern Europe are expected to show broadly similar temperature shifts over time, making this approach appropriate.
 
 Once the temperature change variables were imputed, we addressed shorter gaps of one or two consecutive missing values appearing at the start, middle, or end of time series. In these cases, simple methods such as linear interpolation, last observation carried forward (LOCF), or next observation carried backward (NOCB) were applied. Even if the broader trend is nonlinear, assuming linearity across such small gaps is unlikely to introduce meaningful bias into the analysis.
 
-During exploratory analysis, we observed that the columns 'nitrogen_production' and 'phosphorus_production' contain numerous zero values for certain countries. This pattern is plausible, as smaller economies may not produce these nutrients domestically and instead rely on imports. To handle missing values in these columns, we established the following imputation rules:
+Next, during exploratory analysis, we observed that the columns 'nitrogen_production' and 'phosphorus_production' contain numerous zero values for certain countries. This pattern is plausible, as smaller economies may not produce these nutrients domestically and instead rely on imports. To handle missing values in these columns, we established the following imputation rules:
 
 Rule 1: If the first non-missing value in a series is 0, all preceding missing values are set to 0.
 
@@ -300,7 +300,7 @@ Rule 2: If the last non-missing value in a series is 0, all subsequent missing v
 
 Rule 3: If more than 50% of the non-missing values in a series are 0, all missing values in that series are set to 0.
 
-At this point, the remaining challenge was to address the large gaps of missing values in the dataset, which required more advanced imputation strategies. Since the data was structured as a multi-panel time series, one possible approach would be to apply time series models to impute missing values within each individual series. However, there are several limitations to this option:
+After imputing smaller gaps and easier filling, the remaining challenge was to address the large gaps of missing values in the dataset, which required more advanced imputation strategies. Since the data was structured as a multi-panel time series, one possible approach would be to apply time series models to impute missing values within each individual series. However, there are several limitations to this option:
 
 1. **Short length of series:**  Each time series contains only 21 time points, which is quite limited for reliable time series modeling.
 
@@ -337,6 +337,8 @@ As a tree-based method, LightGBM incorporates built-in strategies for handling m
 
 5. **Scalability across panels:**
 Because the dataset spans multiple countries and variables, LightGBM can model all panels jointly, exploiting shared patterns rather than treating each time series in isolation.
+
+
 
 ### Imputation of item-dependent columns:
 
