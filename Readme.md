@@ -255,7 +255,7 @@ We removed country–item pairs that met any of the following criteria:
 
 5. No records at all for the years 2022–2023.
 
-The dataset originally contained 6,753 unique country–item pairs. Applying the above rules led to the removal of 630 pairs that failed to meet the criteria, primarily due to incomplete PPI or item-related data. The final dataset thus includes 147 countries and 130 items, comprising 137,356 rows.
+The dataset originally contained 6,753 unique country–item pairs. Applying the above rules led to the removal of 630 pairs that failed to meet the criteria, primarily due to incomplete PPI or item-related data. The resulting dataset thus includes 147 countries and 130 items, comprising 137,356 rows.
 
 ### Imputation of item-independent columns:
 Before imputing, we followed two principles:
@@ -314,6 +314,12 @@ As shown in the autocorrelation plot (example) below, the absence of meaningful 
 
 ![autocorrelation plot dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png)
 
+<p align="center">
+  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png" width="30%">
+  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_2_autocorrelation_plot.png" width="30%">
+  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_3_autocorrelation_plot.png" width="30%">
+</p>
+
 The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for the country- Bosnia and Herzegovina.
 
 In short, the time series has weak autocorrelation overall, with only a small 
@@ -321,27 +327,176 @@ short-term dependency at lag 1 (and maybe lag 2). After that, it behaves more
 like noise. This makes classical time series models (like ARIMA) less effective 
 for imputation, since they rely on strong, sustained autocorrelation.
 
-**To impute large gaps of missing data across the dataset, we employ the LightGBM model.** This choice is motivated by several advantages:
+**To impute large gaps of missing data across the dataset, we employ the LightGBM model.** 
 
-1. **Cross-sectional learning:**
-LightGBM can leverage information from related variables (e.g., fertilizer use, production, trade, temperature) across the dataset. This allows the model to “borrow strength” from similar countries, years, or correlated features when a given country’s time series is incomplete.
+- LightGBM effectively captures complex, cross-sectional relationships in heterogeneous, multi-country datasets. It can learn across related variables and panels, using information from correlated features and similar regions to improve imputation accuracy.
 
-2. **Capacity for non-linear relationships:**
-Economic and trade variables rarely follow linear trends. LightGBM is well-suited to capture such complex, non-linear interactions without requiring pre-specified functional forms.
+- The model’s ability to handle non-linear relationships makes it well-suited for economic and trade data, which rarely follow simple trends.
 
-3. **Adaptability to mixed data types:**
-The dataset includes categorical variables (countries, regions), continuous measures (production, prices), and semi-seasonal indicators. LightGBM naturally accommodates these heterogeneous inputs.
+- It also accommodates mixed data types- categorical, continuous, and temporal, without heavy preprocessing.
 
-4. **Tolerance of missingness:**
-As a tree-based method, LightGBM incorporates built-in strategies for handling missing values, reducing the need for extensive pre-cleaning and making it especially suitable for imputation tasks.
-
-5. **Scalability across panels:**
-Because the dataset spans multiple countries and variables, LightGBM can model all panels jointly, exploiting shared patterns rather than treating each time series in isolation.
+- Furthermore, LightGBM’s built-in tolerance for missing values and high scalability enable efficient, large-scale modeling of interconnected country-level panels rather than isolated time series.
 
 
+### LightGBM-Based Imputation of Missing Predictors
 
-### Imputation of item-dependent columns:
+Out of the total 94 item-independent predictor columns, 55 numeric (continuous) columns contained missing values and were imputed using a LightGBM-based column-wise modeling approach.
 
+**Step 1: Column Ordering by Missingness**
+
+To maximize information flow across predictors, columns were ordered from lowest to highest missingness. Columns with fewer missing values were imputed first so that subsequent models-trained for more incomplete columns-could leverage these newly imputed features as additional inputs.
+
+**Step 2: Model Training and Validation Setup**
+
+Imputation was performed one column at a time.
+For each target column:
+
+- The model was trained on all rows from 2001–2021 where the target column had non-missing values.
+
+- A 10% validation subset was randomly sampled from these non-missing rows to evaluate imputation accuracy.
+
+- The remaining 90% of complete rows were used to train the LightGBM model.
+
+
+**Step 3: Evaluation Metrics**
+
+Model accuracy on the validation set was evaluated using six complementary metrics: RMSE, MAE, R², nRMSE_mean, nRMSE_std, and MAPE (%).
+
+- RMSE (Root Mean Squared Error) penalizes large deviations, emphasizing high-impact errors.
+
+- MAE (Mean Absolute Error) reflects the typical absolute error, less influenced by outliers.
+
+- R² quantifies the proportion of variance explained by the model, capturing how well trends are reproduced.
+
+- nRMSE_mean (RMSE normalized by mean) and nRMSE_std (RMSE normalized by standard deviation) provide scale-independent error measures, indicating relative error magnitude compared to central tendency and dispersion, respectively.
+
+- MAPE (%) expresses the average error as a percentage of actual values, offering intuitive interpretability but may be inflated for columns with many near-zero values.
+
+Together, these metrics provide a balanced view of model performance across diverse variables differing in scale, variability, and distribution.
+
+**Step 4: Performance Screening**
+
+While LightGBM performed strongly across most predictors, its accuracy declined for certain variables- especially emission-related columns.
+To maintain imputation reliability, a conservative performance threshold was applied:
+
+- R² < 0.7, or
+
+- MAPE > 50%, or
+
+- nRMSE_mean > 0.5
+
+Columns failing any of these criteria were flagged as problematic. In total, 15 columns were excluded from LightGBM imputation and would be handled using alternative models better suited for their distributions.
+
+**Step 5: Post-Imputation Validation**
+
+After imputation, the distributions of the 40 successfully imputed columns were inspected to ensure coherence with the original variable patterns. For example, variables defined as non-negative (e.g., fertilizer use, production) were verified to have no negative imputed values. 
+
+To enforce this constraint programmatically, the LightGBM objective function was chosen dynamically based on the target variable’s range:
+
+```python
+# Choose appropriate LightGBM objective
+y_min = y_train.min()
+
+if y_min >= 0:
+    obj = "tweedie"      # suitable for non-negative continuous targets
+else:
+    obj = "regression"   # suitable for real-valued targets
+```
+
+### Imputation of Remaining 15 Item-Independent Columns
+
+To handle missing values in the remaining 15 item-independent columns, three different models were evaluated- LightGBM, Tabular Variational Autoencoder (TVAE), and K-Nearest Neighbors (KNN) Imputer. The goal was to identify the most accurate approach for each column based on a common validation framework. Following were the 
+15 columns to be imputed: 
+
+```{python}
+['emission_share_agri_waste_mgt', 'total_fdi_inflows',
+       'emission_share_farmgate', 'emission_share_land_use_change',
+       'emission_share_energy_use', 'emission_share_crops',
+       'emission_share_pre_and_post_production',
+       'value_added_aff_per_total_fdi', 
+       'emission_share_end_to_end_agrifood',
+       'emission_share_ipcc_agriculture', 'total_pesticide_export_value',
+       'phosphorus_production', 'potassium_agri_use',
+       'emission_share_livestock', 'aoi_credit_to_ag_forest_fish']
+```
+
+**Data Preparation**
+
+Rows with complete data across all 15 target columns were pooled to create training and validation sets. To prevent data leakage, all rows corresponding to the year 2023 were excluded from training.
+From the pooled data, one row per country was randomly selected to form the validation set (112 rows total), while the remaining 1,931 rows were used for training the imputation models.
+
+**Model Summaries**
+
+- **LightGBM:** A gradient boosting model trained to predict missing values column-by-column using available features.
+
+- **TVAE (Tabular Variational Auto Encoder):** A deep generative model that learns the joint probability distribution of all features rather than predicting missing values directly. It can sample new rows that are statistically consistent with the training data.
+
+  TVAE was trained with conditional inputs to guide sampling. Starting with *area* as the conditional column, 85 of 112 validation rows were successfully generated. Using *sub_region* as a condition increased this to 110 rows, and finally, conditioning on *region* (fewer category levels) produced all 112 rows.
+
+- **KNN Imputer:** A non-parametric approach that imputes missing values using the average of the k nearest rows, determined by Euclidean distance across non-missing features. Each missing cell is imputed independently.
+
+**Model Comparison**
+
+All three models were evaluated on the validation set using four metrics- RMSE, MAE, R², and nRMSE_std.
+The Mean Absolute Percentage Error (MAPE) was not used, as many columns contain zero or near-zero values, which distort percentage-based errors.
+
+**Key Results**
+
+- KNN Imputer achieved the best performance across most columns, particularly all emission-share variables and other continuous targets.
+
+- LightGBM performed best only for the column potassium_agri_use.
+
+- TVAE, while conceptually powerful, was not competitive for direct point imputation in this context.
+
+### Imputation of Item-Dependent Columns:
+The imputation of item-dependent columns was performed separately from the item-independent variables. Out of 106 total columns, 10 were identified as item-dependent, including the target variable *producer_price_index*:
+
+```{python}
+['export_quantity', 'export_value', 'import_quantity', 'import_value',
+ 'area_harvested', 'production', 'yield',
+ 'gross_production_value', 'gross_production_index', 'producer_price_index']
+```
+
+**Data Preparation**
+
+The columns *gross_production_value (GPV)* and *gross_production_index (GPI)* capture similar information. While GPV provides absolute production values in monetary terms, GPI expresses the same trend as an index relative to 2014–2016, making it a rescaled version of GPV.
+To avoid multicollinearity, *gross_production_value* was removed from the dataset.
+
+Exploratory checks revealed that several items contained entire columns of missing values, especially for trade-related variables (imports and exports). Imputing full time series for these cases would be unreliable. Therefore, items missing more than 50% of values in import/export columns were removed, resulting in the exclusion of 30 items.
+
+There were 8 columns that were to be imputed:
+
+```{bash}
+['production', 'area_harvested', 'gross_production_index', 'yield',
+ 'import_value', 'import_quantity', 'export_value', 'export_quantity']
+```
+
+**Imputation Model**
+
+Missing values in these columns were imputed using LightGBM, trained column-wise.
+For each column:
+
+- Training used all data from 2001–2021 where the column had valid (non-missing) values.
+
+- 10% of those rows were reserved as a validation set.
+
+- The model used the Tweedie objective, suitable for skewed, non-negative data (common in agricultural and trade variables).
+
+**Evaluation**
+
+Model performance was evaluated using the following metrics:
+RMSE, MAE, R², nRMSE_mean, nRMSE_std, and MAPE (%).
+LightGBM performed consistently well across all item-dependent columns.
+
+**Final Dataset**
+
+After completing the imputation process, the final fully imputed dataset contained:
+
+- 117,207 rows
+
+- 103 columns
+
+This dataset was then used for downstream modeling and analysis.
 
 *Detailed step-by-step information about the missing data imputation process could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1.ipynb).*
 
