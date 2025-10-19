@@ -312,20 +312,15 @@ Given these challenges, supervised machine learning models that leverage both cr
 
 As shown in the autocorrelation plot (example) below, the absence of meaningful autocorrelation in a sample of series further underscores the limitations of time series–only methods and highlights the need for cross-sectional ML-based approaches.
 
-![autocorrelation plot dataset-1](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png)
-
 <p align="center">
   <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png" width="30%">
   <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot2.png" width="30%">
   <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot3.png" width="30%">
 </p>
 
-The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for the country- Bosnia and Herzegovina.
-
 In short, the time series has weak autocorrelation overall, with only a small 
 short-term dependency at lag 1 (and maybe lag 2). After that, it behaves more 
-like noise. This makes classical time series models (like ARIMA) less effective 
-for imputation, since they rely on strong, sustained autocorrelation.
+like noise. This makes classical time series models (like ARIMA) less effective for imputation, since they rely on strong, sustained autocorrelation.
 
 **To impute large gaps of missing data across the dataset, we employ the LightGBM model.** 
 
@@ -401,6 +396,209 @@ if y_min >= 0:
     obj = "tweedie"      # suitable for non-negative continuous targets
 else:
     obj = "regression"   # suitable for real-valued targets
+```
+
+*The evaluation metrics for the LightGBM model could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1.ipynb).*
+
+```{html}
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>method</th>
+      <th>target</th>
+      <th>n_train</th>
+      <th>n_val</th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>nRMSE_mean</th>
+      <th>nRMSE_std</th>
+      <th>MAPE(%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_agri_waste_mgt</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>2.385</td>
+      <td>1.111</td>
+      <td>0.819</td>
+      <td>0.292</td>
+      <td>0.423</td>
+      <td>17.724</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>total_fdi_inflows</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>25371.158</td>
+      <td>5859.231</td>
+      <td>0.765</td>
+      <td>1.807</td>
+      <td>0.483</td>
+      <td>140.222</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_farmgate</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>4.989</td>
+      <td>3.019</td>
+      <td>0.931</td>
+      <td>0.197</td>
+      <td>0.262</td>
+      <td>20.908</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_land_use_change</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>3.677</td>
+      <td>1.700</td>
+      <td>0.959</td>
+      <td>0.366</td>
+      <td>0.201</td>
+      <td>174.921</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_energy_use</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>9.211</td>
+      <td>4.382</td>
+      <td>0.902</td>
+      <td>0.159</td>
+      <td>0.312</td>
+      <td>8.312</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_crops</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>0.607</td>
+      <td>0.279</td>
+      <td>0.865</td>
+      <td>0.355</td>
+      <td>0.366</td>
+      <td>66.542</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_pre_and_post_production</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>2.766</td>
+      <td>1.407</td>
+      <td>0.863</td>
+      <td>0.219</td>
+      <td>0.368</td>
+      <td>15.660</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>value_added_aff_per_total_fdi</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>62.959</td>
+      <td>14.894</td>
+      <td>-3.920</td>
+      <td>6.803</td>
+      <td>2.208</td>
+      <td>138.120</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_end_to_end_agrifood</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>7.191</td>
+      <td>4.145</td>
+      <td>0.916</td>
+      <td>0.150</td>
+      <td>0.288</td>
+      <td>15.204</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_ipcc_agriculture</td>
+      <td>3123</td>
+      <td>112</td>
+      <td>3.807</td>
+      <td>2.161</td>
+      <td>0.952</td>
+      <td>0.189</td>
+      <td>0.217</td>
+      <td>28.088</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>total_pesticide_export_value</td>
+      <td>3109</td>
+      <td>112</td>
+      <td>118344.626</td>
+      <td>35397.689</td>
+      <td>0.979</td>
+      <td>0.461</td>
+      <td>0.144</td>
+      <td>7571.306</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>phosphorus_production</td>
+      <td>3108</td>
+      <td>112</td>
+      <td>372808.866</td>
+      <td>64640.360</td>
+      <td>0.938</td>
+      <td>1.075</td>
+      <td>0.247</td>
+      <td>42.852</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>potassium_agri_use</td>
+      <td>3107</td>
+      <td>112</td>
+      <td>64275.408</td>
+      <td>21357.738</td>
+      <td>0.998</td>
+      <td>0.204</td>
+      <td>0.049</td>
+      <td>260.437</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>emission_share_livestock</td>
+      <td>3101</td>
+      <td>112</td>
+      <td>2.893</td>
+      <td>1.583</td>
+      <td>0.966</td>
+      <td>0.190</td>
+      <td>0.183</td>
+      <td>26.999</td>
+    </tr>
+    <tr>
+      <td>KNN</td>
+      <td>aoi_credit_to_ag_forest_fish</td>
+      <td>2176</td>
+      <td>112</td>
+      <td>0.737</td>
+      <td>0.230</td>
+      <td>0.943</td>
+      <td>0.650</td>
+      <td>0.238</td>
+      <td>16.176</td>
+    </tr>
+  </tbody>
+</table>
 ```
 
 ### Imputation of Remaining 15 Item-Independent Columns
