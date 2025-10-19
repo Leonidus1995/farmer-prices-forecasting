@@ -316,8 +316,8 @@ As shown in the autocorrelation plot (example) below, the absence of meaningful 
 
 <p align="center">
   <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot1.png" width="30%">
-  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_2_autocorrelation_plot.png" width="30%">
-  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_3_autocorrelation_plot.png" width="30%">
+  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot2.png" width="30%">
+  <img src="https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/dataset_1_autocorrelation_plot3.png" width="30%">
 </p>
 
 The autocorrelation plot shown above corresponds to the credit_to_ag_forest_fish series for the country- Bosnia and Herzegovina.
