@@ -1836,6 +1836,30 @@ This dataset was then used for downstream modeling and analysis.
 
 *Detailed step-by-step information about the missing data imputation process for the item-dependent columns could be found [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1_third.ipynb).*
 
+# 📊 Exploratory Data Analysis
+
+## Distribution Analysis of Predictor Variables
+
+- Exploring the distributions of predictor variables revealed substantial right-skewness across most agronomic, trade, economic, and financial indicators, reflecting the dominance of a few large agricultural and economic systems. 
+
+- Applying transformations such as log(1+x) and Yeo-Johnson generally stabilized variance and improved symmetry, while a QuantileTransformer was more effective for variables with extreme zero inflation or outliers, such as emission shares. 
+
+- Several features displayed multimodal patterns, indicating natural clustering among countries (e.g., small, mid-tier, and large economies). 
+
+- Variables containing both positive and negative values, such as total_fdi_inflows and nutrient balance metrics, required decomposition into separate positive, negative, and binary indicator components to preserve information and achieve stable distributions. 
+
+- Structural zeros (common in trade, nutrient production, and pesticide use) were treated as genuine characteristics of the data rather than noise.
+
+Overall, these distributional insights guided transformation choices, helped control outlier influence, and informed feature engineering to ensure more balanced and interpretable modeling inputs.
+
+## Relationship Between Target and Predictors
+
+- Analysis of the producer price index (PPI) trends revealed regional differences in price dynamics over time. Countries in Asia and to a lesser extent Africa and the Americas showed a pronounced upward fluctuations in PPI in the recent years, for major crops, indicating stronger relative price growth compared to earlier years. 
+
+- In contrast, Europe and Oceania exhibited relatively stable PPI patterns with limited fluctuations. 
+
+- It is important to interpret these increases as relative growth within regions, not as evidence of higher absolute price levels. Farmers in Asia and Africa have seen faster price rises relative to their own historical baselines, rather than higher overall prices than those in developed regions.
+
 # 🤖 Modeling:
 
 # 🧪 Model Evaluation:
