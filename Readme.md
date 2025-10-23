@@ -1,8 +1,15 @@
-# 🌾 Farmer Producer Prices Forecasting (FAOSTAT, 2001-2023)
+# 🌾 Farmer Producer Prices Prediction (FAOSTAT)
 
-Forecasting agricultural Producer Price Index (PPI) across countries and crops using multi-panel FAOSTAT data. The project builds a reproducible data pipeline (clean → integrate → impute → model) and evaluates classical baselines vs. ML models.
+Predicting agricultural Producer Price Index (PPI) for the year 2023 across countries and crops using multi-panel FAOSTAT data.
 
-**Why this matters:** Farm-gate prices drive producer decisions, policy, and food security. Reliable forecasts help farmers, economists, and policymakers plan with less guesswork.
+This project develops a structured workflow to clean, integrate, and impute a global dataset of agronomic, trade, economic, and environmental indicators, then applies machine-learning and deep-learning models to predict PPI and assess the relative importance of predictors influencing price variation.
+
+**Why this matters:** 
+- **For farmers:** a reliable price outlook helps decide what to plant and how much land to allocate, balancing profitability and risk before the season begins.
+
+- **For policymakers and economists:** price signals guide subsidy design, import–export policy, and food-security planning, ensuring support reaches crops and regions that need it most.
+
+- **For financial institutions:** predicted price strength offers a proxy for repayment capacity, informing agricultural credit, insurance, and investment decisions.
 
 ## Repository Map
 
@@ -174,7 +181,11 @@ Carried out a post-imputation exploratory analysis to validate data integrity an
 
 
 *Useful Plots*
-- [Feature Distributions]()
+- [Feature Distributions](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/Feature_distributions)
+
+- [Correlation Plots](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/Correlation_eda)
+
+For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/eda.ipynb).
 
 ## 🤖 Modeling
 
@@ -182,57 +193,16 @@ Carried out a post-imputation exploratory analysis to validate data integrity an
 
 **Baseline:** Mean of prior three years (2020–2022) per country-item.
 
-- Code: base_model.py
+- Code: [base_model.py](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/base_model.py)
 
 **ML models:** Gradient-boosted trees (LightGBM) with cross-sectional signals.
 
-- Code: LightGBM.py
+- Code: [LightGBM.py](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
 
 - Model metrics: 
 
-## Reproduce the Pipeline
 
-*Assumes Python + Jupyter. Use the notebooks in order.*
 
-1. **Preprocess & integrate**
-
-- Run: pre_processing.ipynb
-
-- (Optional DB route: see database_files/)
-
-2. **EDA**
-
-- Run: eda.ipynb
-
-- See plots in plots/
-
-3. **Imputation**
-
-- Strategy & diagnostics: data_imputation.ipynb
-
-- Dataset-1 runs: dataset_1.ipynb
-
-- Extended experiments: dataset_1_second.ipynb, dataset_1_third.ipynb
-
-4. **Modeling**
-
-- Baseline: base_model.py
-
-- LightGBM: LightGBM.py
-
-- Review metrics: metrics_lgbm.html, metrics_knn.html, metrics_tvae.html
-
-## Results at a Glance (where to look)
-
-- **Pre/post cleaning coverage:** plots/feat_dist_pre_clean.png, plots/feat_dist_post_clean.png
-
-- **Missingness structure:** plots/heatmap_top40.png, plots/matrixplot_top30.png, plots/heatmap_missing_top30.png
-
-- **Dataset-1 feature gaps:** plots/feature_distribution_dataset_1.png, plots/top_missing_cols_dataset_1.png
-
-- **Autocorrelation check:** plots/dataset_1_autocorrelation_plot1.png (+2/3)
-
-- **Imputation model performance:** metrics_lgbm.html, metrics_knn.html, metrics_tvae.html
 
 
 
