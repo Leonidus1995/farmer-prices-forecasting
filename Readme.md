@@ -138,7 +138,7 @@ Compared LightGBM vs. TVAE vs. KNN-Imputer on a pooled, fully-observed subset
 
 *Useful visuals:*
 
-- Temporal trends:
+- [Temporal trends](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/temporal_trends):
 
 - Weak autocorrelation → favors cross-sectional ML over ARIMA for imputation:
 
