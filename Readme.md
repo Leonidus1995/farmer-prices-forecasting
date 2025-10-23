@@ -138,15 +138,43 @@ Compared LightGBM vs. TVAE vs. KNN-Imputer on a pooled, fully-observed subset
 
 *Useful visuals:*
 
-- [Temporal trends](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/temporal_trends):
+- [Temporal trends](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/temporal_trends) → simple interpolation for stable trends and machine-learning methods for irregular or sparse series.
 
-- Weak autocorrelation → favors cross-sectional ML over ARIMA for imputation:
+- [Weak autocorrelation](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/Autocorrelation) → favors cross-sectional ML over ARIMA for imputation:
 
-*Notebooks:* dataset_1.ipynb, data_imputation.ipynb
+*Notebooks:*
+ - [Assessment for imputation](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/data_imputation.ipynb)
+ - [Imputation of 55 item-independent columns (LightGBM)](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1.ipynb)
+- [Imputation of 15 item-independent columns (KNN, TVAE)](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1_second.ipynb)
+- [Imputation of 8 item-dependent columns](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/dataset_1_third.ipynb)
+    
+    
 
 ## 🔍 Post-Imputation Data Exploration
 
-Once all missing values were imputed, we carried out an exploratory analysis to validate data integrity and understand key relationships among variables before modeling.
+Carried out a post-imputation exploratory analysis to validate data integrity and understand variable distributions and relationships before modeling.
+
+### Key Takeaways:
+
+- Heavy right-skewness in most predictors.
+
+- Applying transformations (log(1+x), Yeo–Johnson and Quantile) stabilized variance and improved symmetry.
+
+- Several variables exhibited multimodal distributions, hinting at clusters among small, mid-tier, and large economies.
+
+- Features with both positive and negative values decomposed into positive, negative, and binary-indicator components to retain information and stabilize scale.
+
+- Asia, and to a lesser extent Africa and the Americas, showed stronger relative price growth in recent years, especially for major crops.
+
+- Europe and Oceania maintained comparatively stable PPI trends.
+
+- No predictor showed a strong direct correlation with PPI.
+
+- Multiple feature clusters, suggesting multicollinearity that may require dimensionality reduction or feature selection in modeling.
+
+
+*Useful Plots*
+- [Feature Distributions]()
 
 ## 🤖 Modeling
 
