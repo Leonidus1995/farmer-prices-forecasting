@@ -15,3 +15,5 @@ pre_processed_data.csv
 FAOSTAT_region_wise_countries.csv
 
 *.csv
+
+*.docx
