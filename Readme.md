@@ -31,7 +31,10 @@ This project develops a structured workflow to clean, integrate, and impute a gl
     - [Baseline model](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/base_model.py)
     - [LightGBM model](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
 
-- **Model Evaluation Results:** [here]()
+- **Model Evaluation Results (on 2023 testing year):**
+    - Baseline: RMSE = 127.61, MAE = 43.49, R² = 0.56 
+
+    - LightGBM: RMSE = 101.28, MAE = 38.44, R² = 0.73
 
 - **Figures/Plots:** [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots)
 
@@ -219,7 +222,7 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 
 - Performance on 2023 test set: **RMSE = 127.61; MAE = 43.49; R² = 0.56**
 
-- True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
+- True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/Base_true_vs_predicted.png)
 
 **LightGBM:**
 
@@ -227,9 +230,13 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 
 - Performance on 2023 test set: **RMSE = 101.28; MAE = 38.44; R² = 0.73**
 
+- Generalizes well and markedly outperforms the naive averaging approach
+
 - Errors widen at very high PPI values (volatility/extremes)
 
-- 
+- True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/LightGBM_true_vs_predicted.png)
+
+- Top 15 features by importance: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/LightGBM_feature_imp_top15.png)
 
 **Neural Net:**
 
