@@ -48,8 +48,18 @@ y_test = test_set[target]
 model = LGBMRegressor(
     objective='regression',
     n_estimators=5000,
-    verbosity=-1,
-    seed=42
+    learning_rate=0.03,
+    num_leaves=30,
+    max_depth=6,
+    min_data_in_leaf=100,
+    feature_fraction=0.8,
+    bagging_fraction=0.8,
+    bagging_freq=2,
+    lambda_l1=2,
+    lambda_l2=2,
+    max_bins=80,
+    random_state=42,
+    verbosity=-1
 )
 
 # Fit the model with early stopping
@@ -88,12 +98,14 @@ def model_eval(x, y, model, set_name, model_name):
 
 
 # -------------- Function for Plotting: True VS Predicted ---------------------
-def make_plot(y_true, y_pred, tuning_status):
+def make_plot(x, y, model):
+    y_true = y
+    y_pred = model.predict(x, raw_score=False)
     # Plot the true versus predicted values
     plt.scatter(y_true, y_pred, alpha=0.5)
     plt.xlabel('True PPI Values')
     plt.ylabel('Predicted PPI Values')
-    plt.title(f'LightGBM Model ({tuning_status}): True VS Predicted', fontweight='bold')
+    plt.title(f'LightGBM Model: True VS Predicted', fontweight='bold')
 
     # Add 45° reference line (y = x)
     min_val = min(y_true.min(), y_pred.min())
@@ -101,19 +113,20 @@ def make_plot(y_true, y_pred, tuning_status):
     plt.plot([min_val, max_val], [min_val, max_val], 'b--', linewidth=1.5, label='Perfect Prediction')
 
     plt.legend()
-    plt.savefig(f'plots/LightGBM_true_vs_predicted_({tuning_status}).png', dpi=360, bbox_inches='tight')
+    plt.savefig(f'plots/LightGBM_true_vs_predicted.png', dpi=360, bbox_inches='tight')
     plt.show()
 
-# -------------------- Feature Importance Plot --------------------------------- 
-imp = pd.Series(model.feature_importances_, index = X_train.columns).sort_values(ascending=False)[:15]
+# ------------------- Function: Feature Importance Plot ----------------------- 
+def feat_imp(model, x_train):
+    imp = pd.Series(model.feature_importances_, index = x_train.columns).sort_values(ascending=False)[:15]
 
-plt.figure(figsize=(8,8))
-plt.bar(x=imp.index, height=imp.values, data=imp)
-plt.title("LightGBM Feature Importance (Top 15)", fontweight='bold')
-plt.xticks(rotation=90)
-plt.tight_layout()
-plt.savefig('plots/LightGBM_feature_imp_top15.png', dpi=360)
-plt.show()
+    plt.figure(figsize=(8,8))
+    plt.bar(x=imp.index, height=imp.values, data=imp)
+    plt.title("LightGBM Feature Importance (Top 15)", fontweight='bold')
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.savefig('plots/LightGBM_feature_imp_top15.png', dpi=360)
+    plt.show()
 
 
 
@@ -198,8 +211,61 @@ results_val_df = pd.DataFrame(
     )
 
 
+# ------- Re-fitting best model on data from 2001-2022 and test on 2023 --------
+df_1 = df.copy()
 
+# Categorical columns
+categorical_cols = ['area', 'item', 'region', 'sub_region']
 
+# Explicitly set categoricals 
+for col in categorical_cols:
+    if col in df_1.columns:
+        df_1[col] = df_1[col].astype('category')
 
+# Training data
+train_set = df_1.loc[df_1['year'] < 2023]
+X_train = train_set.drop('producer_price_index', axis=1)
+y_train = train_set['producer_price_index']
 
+# Testing data
+test_set = df_1.loc[df_1["year"] == 2023]
+X_test = test_set.drop('producer_price_index', axis=1)
+y_test = test_set['producer_price_index']
 
+# Define model
+model_best = LGBMRegressor(
+    objective='regression',
+    n_estimators=5000,
+    learning_rate=0.03,
+    num_leaves=30,
+    max_depth=6,
+    min_data_in_leaf=100,
+    feature_fraction=0.8,
+    bagging_fraction=0.8,
+    bagging_freq=2,
+    lambda_l1=2,
+    lambda_l2=2,
+    max_bins=80,
+    random_state=42,
+    verbosity=-1
+)
+
+# Fitting model
+model_best.fit(
+    X_train, y_train,
+    eval_set=[(X_test, y_test)],
+    eval_metric='rmse',
+    callbacks=[lgb.early_stopping(stopping_rounds=200, verbose=False)]
+)
+
+# Model evaluation on Training set
+model_eval(X_train, y_train, model_best, "Training set", "LightGBM")
+
+# Model evaluation on Testing set
+model_eval(X_test, y_test, model_best, "Testing set", "LightGBM")
+
+# Plot of True versus Predicted
+make_plot(X_test, y_test, model_best)
+
+# Feature importance plot
+feat_imp(model_best, X_train)

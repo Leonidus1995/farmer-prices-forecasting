@@ -1,4 +1,4 @@
-# 🌾 Farmer Producer Prices Prediction (FAOSTAT)
+# 🌾 Farmer Prices Prediction (FAOSTAT)
 
 Predicting agricultural Producer Price Index (PPI) for the year 2023 across countries and crops using multi-panel FAOSTAT data.
 
@@ -191,15 +191,52 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 
 **Target:** producer_price_index (PPI)
 
-**Baseline:** Mean of prior three years (2020–2022) per country-item.
+**Baseline:** 
+
+- Mean of prior three years (2020–2022) per country-item.
+
+- Easy to compute and provides a yardstick for more complex models.
 
 - Code: [base_model.py](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/base_model.py)
 
-**ML models:** Gradient-boosted trees (LightGBM) with cross-sectional signals.
+**Gradient-boosted trees (LightGBM)** with cross-sectional signals:
+
+- Trained on data from 2001-2021, with 2022 held out for validation and hyperparameter tuning (manual grid search).
+
+- The best performing model was retrained on combined 2001-2022 data and applied to predict 2023 PPI values.
+
+- Hyperparams from best model: learning_rate=0.03, num_boost_round=5000 (early stop), num_leaves≈30, max_depth=6, min_data_in_leaf=100, feature_fraction=0.8, bagging_fraction=0.8, bagging_freq=2, reg_alpha=2, reg_lambda=2, max_bin=80.
 
 - Code: [LightGBM.py](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
 
-- Model metrics: 
+**Neural Net Model:** 
+
+- currently working on.........
+
+## Model Evaluation:
+
+**Baseline:**
+
+- Performance on 2023 test set: **RMSE = 127.61; MAE = 43.49; R² = 0.56**
+
+- True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
+
+**LightGBM:**
+
+- Training fit: RMSE = 17.78; MAE = 10.78; R² = 0.91
+
+- Performance on 2023 test set: **RMSE = 101.28; MAE = 38.44; R² = 0.73**
+
+- Errors widen at very high PPI values (volatility/extremes)
+
+- 
+
+**Neural Net:**
+
+- currently working on .......
+
+
+
 
 
 
