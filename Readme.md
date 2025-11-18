@@ -1,4 +1,4 @@
-# 🌾 Farmer Prices Prediction (FAOSTAT)
+# 🌾 Forecasting Farmer Prices (FAOSTAT)
 
 Predicting agricultural Producer Price Index (PPI) for the year 2023 across countries and crops using multi-panel FAOSTAT data.
 
@@ -273,7 +273,13 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 - True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/NeuralNet_true_vs_predicted.png)
 
 
+## SHAP (SHapley Additive exPlanations) Analysis
 
+Working on it. Coming soon ....
+
+## Model Cloud Deployment
+
+Working on it. Coming soon .....
 
 
 
