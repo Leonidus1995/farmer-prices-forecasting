@@ -30,11 +30,15 @@ This project develops a structured workflow to clean, integrate, and impute a gl
 - **Models:**
     - [Baseline model](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/base_model.py)
     - [LightGBM model](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
+    - [Neural Net model](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/NeuralNet.ipynb)
 
 - **Model Evaluation Results (on 2023 testing year):**
     - Baseline: RMSE = 127.61, MAE = 43.49, R² = 0.56 
 
     - LightGBM: RMSE = 101.28, MAE = 38.44, R² = 0.73
+
+    - Neural Net: RMSE = 177.49, MAE = 67.52, R² = 0.157
+
 
 - **Figures/Plots:** [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots)
 
@@ -48,37 +52,39 @@ Target + predictors assembled yearly by (country × item):
 
 ## Pipeline Overview
 
-1. **Ingest & Clean (per-dataset):** Raw CSVs from FAOSTAT cleaned with Pandas.
+## Ingest & Clean (per-dataset):
 
-    - Notebooks: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/files_data_cleaning)
+- Raw CSVs from FAOSTAT cleaned with Pandas.
 
-    - Pre-clean feature coverage: 
+- Notebooks: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/files_data_cleaning)
+
+- Pre-clean feature coverage: 
     
-    ![Before preprocessing](plots/feat_dist_pre_clean.png)
+![Before preprocessing](plots/feat_dist_pre_clean.png)
 
-2. **Relational Integration (PostgreSQL):**
+## Relational Integration (PostgreSQL):
 
-    - Create tables + load cleaned data → integrate by (area/country, year, item).
+- Create tables + load cleaned data → integrate by (area/country, year, item).
 
-    - Code & SQL: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/database_files)
+- Code & SQL: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/database_files)
 
-3. **Pre-processing & Feature Reduction:**
+## Pre-processing & Feature Reduction:
 
-    - Start: 392,856 rows × 116 features.
+- Start: 392,856 rows × 116 features.
 
-    - Drop 10 features with >90% missingness (e.g., market concentration indexes, self-sufficiency ratio, etc.).
+- Drop 10 features with >90% missingness (e.g., market concentration indexes, self-sufficiency ratio, etc.).
 
-    - Item filtering: remove 43 animal-related items + 25 systematically sparse items → retain 134 items.
+- Item filtering: remove 43 animal-related items + 25 systematically sparse items → retain 134 items.
 
-    - Country filtering: retain 149/166 countries by excluding those with complete gaps in two key employment/credit features.
+- Country filtering: retain 149/166 countries by excluding those with complete gaps in two key employment/credit features.
 
-    - After reduction: 211,006 rows × 97 features.
+- After reduction: 211,006 rows × 97 features.
 
-    - Post-clean coverage:
+- Post-clean coverage:
     
-    ![After preprocessing](plots/feat_dist_post_clean.png)
+![After preprocessing](plots/feat_dist_post_clean.png)
 
-    - Notebook: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/pre_processing.ipynb) 
+- Notebook: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/pre_processing.ipynb) 
 
 ## Missing Data Assessment → Imputation Plan
 
@@ -160,7 +166,7 @@ Compared LightGBM vs. TVAE vs. KNN-Imputer on a pooled, fully-observed subset
     
     
 
-## 🔍 Post-Imputation Data Exploration
+## Post-Imputation Data Exploration
 
 Carried out a post-imputation exploratory analysis to validate data integrity and understand variable distributions and relationships before modeling.
 
@@ -182,6 +188,7 @@ Carried out a post-imputation exploratory analysis to validate data integrity an
 
 - Multiple feature clusters, suggesting multicollinearity that may require dimensionality reduction or feature selection in modeling.
 
+![Before preprocessing](plots/PPI_trends_items_countries.png)
 
 *Useful Plots*
 - [Feature Distributions](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots/Feature_distributions)
@@ -190,7 +197,7 @@ Carried out a post-imputation exploratory analysis to validate data integrity an
 
 For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/eda.ipynb).
 
-## 🤖 Modeling
+## Modeling
 
 **Target:** producer_price_index (PPI)
 
@@ -212,9 +219,26 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 
 - Code: [LightGBM.py](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/LightGBM.py)
 
-**Neural Net Model:** 
+**Neural Net Model:** a fully connected neural network in PyTorch
 
-- currently working on.........
+- *Inputs:*
+  - 92 continuous numeric predictors (production, trade, macro, climate, etc.)
+  - 12 binary indicators (e.g., LDC status, negative nutrient balance flags)
+  - 4 categorical variables with learnable embeddings:
+    - Country (Area) – 147 levels → 16-dim embedding
+    - Commodity (Item) - 130 levels → 16-dim embedding
+    - Region – 5 levels → 2-dim embedding
+    - Sub-region – 21 levels → 4-dim embedding
+
+- *Preprocessing:*
+  - Continuous features transformed with Yeo–Johnson and standardized (fit on 2001–2021, then applied to 2022–2023).
+  - Target PPI transformed with `log(1 + x)` to stabilize variance.
+
+- *Architecture & training:*
+  - Concatenate all embeddings + scaled numeric/binary features → MLP with 3 hidden layers (256 → 128 → 64 units).
+  - Each hidden layer uses BatchNorm, ReLU activation, and dropout (p = 0.2).
+  - Trained with AdamW (lr = 0.001, weight decay = 1e-4) and MSE loss.
+  - Trained on 2001–2021, with 2022 as a hold-out validation year for early stopping; final model retrained on 2001–2022 and used to predict 2023 PPI.
 
 ## Model Evaluation:
 
@@ -240,7 +264,14 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 
 **Neural Net:**
 
-- currently working on .......
+- Training a fully connected network with country/item embeddings did not outperform the simpler models on the 2023 hold-out year. 
+
+- Performance on 2023 test set: **RMSE = 177.49; MAE = 67.52; R² = 0.16**
+
+- The model substantially under-predicted high PPI values, leading to larger errors than both the rolling-average baseline and the LightGBM model.
+
+- True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/NeuralNet_true_vs_predicted.png)
+
 
 
 
