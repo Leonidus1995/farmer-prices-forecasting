@@ -6,7 +6,7 @@
 - **Data:** 2001–2023 panel cleaned in Pandas and integrated in PostgreSQL; missingness handled via a structured imputation pipeline (rule-based + LightGBM/KNN/TVAE) with explicit quality thresholds for keeping imputed features.
 - **Models:** Compared a 3-year rolling-average baseline, a gradient-boosted tree model (LightGBM), and a fully connected neural network with country/item/region embeddings.
 - **Results (2023 hold-out):** Baseline R² = 0.56 (RMSE = 127.61); LightGBM improves to R² = 0.73 (RMSE = 101.28), while the neural net underperforms (R² = 0.16) and struggles with extreme price spikes.
-- **Takeaway:** Cross-sectional tree-based models on carefully imputed features add clear value over simple historical averages—especially for mid-range prices—but accurately forecasting extreme PPI spikes remains challenging.
+- **Takeaway:** Cross-sectional tree-based models on carefully imputed features add clear value over simple historical averages, especially for mid-range prices, but accurately forecasting extreme PPI spikes remains challenging.
 
 
 Predicting agricultural Producer Price Index (PPI) for the year 2023 across countries and crops using multi-panel FAOSTAT data.

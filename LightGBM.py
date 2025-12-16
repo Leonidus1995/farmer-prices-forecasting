@@ -11,7 +11,7 @@ from sklearn.metrics import (
     root_mean_squared_error, r2_score, mean_absolute_error
 )
 from lightgbm import LGBMRegressor
-from sklearn.compose import TransformedTargetRegressor
+import os
 
 # Load the dataset
 df = pd.read_csv('/Users/gurjitsingh/Desktop/MS Data Science/MS_Project_Python/after_eda_before_modeling.csv')
@@ -269,3 +269,7 @@ make_plot(X_test, y_test, model_best)
 
 # Feature importance plot
 feat_imp(model_best, X_train)
+
+# Save the final trained model artifact
+os.makedirs("artifacts", exist_ok=True)
+model_best.booster_.save_model("artifacts/lgbm_ppi.txt")
