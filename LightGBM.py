@@ -12,6 +12,7 @@ from sklearn.metrics import (
 )
 from lightgbm import LGBMRegressor
 import os
+import pickle
 
 # Load the dataset
 df = pd.read_csv('/Users/gurjitsingh/Desktop/MS Data Science/MS_Project_Python/after_eda_before_modeling.csv')
@@ -270,6 +271,14 @@ make_plot(X_test, y_test, model_best)
 # Feature importance plot
 feat_imp(model_best, X_train)
 
-# Save the final trained model artifact
+# Save the final trained model artifact 
+"""
+Note: 
+For production-ready setup, we should save the complete pipeline instead of 
+just the trained model. When we serialize the full pre-processing + model pipeline, 
+we guarantee identical transformations at training and inference.
+"""
 os.makedirs("artifacts", exist_ok=True)
-model_best.booster_.save_model("artifacts/lgbm_ppi.txt")
+model_path = "artifacts/model.pkl"
+with open(model_path, "wb") as f: # opens the file in write-binary mode
+    pickle.dump(model_best, f)    # writes the trained model object into that file

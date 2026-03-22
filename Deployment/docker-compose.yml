@@ -1,0 +1,10 @@
+services:
+  api:
+    build: ./fastapi
+
+  ui:
+    build: ./streamlit_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api

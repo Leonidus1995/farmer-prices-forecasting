@@ -1,0 +1,9 @@
+# API layer
+fastapi==0.124.2
+uvicorn==0.38.0
+
+# ML runtime
+numpy==2.3.2
+scikit-learn==1.5.1
+pandas==2.2.2
+lightgbm==4.6.0
