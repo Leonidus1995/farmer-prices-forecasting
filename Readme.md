@@ -1,5 +1,8 @@
 # 🌾 Forecasting Farmer Prices (FAOSTAT)
 
+**Demo App:**  
+https://ca-ppi-ui.jollycliff-8688dec6.eastus.azurecontainerapps.io
+
 ### TL;DR
 
 - **Goal:** Predict 2023 Producer Price Index (PPI) for major crops by country using multi-panel FAOSTAT data combining agronomic, trade, macroeconomic, input, and climate indicators.
@@ -282,13 +285,32 @@ For details click [here](https://github.com/Leonidus1995/farmer-prices-forecasti
 - True vs. Predicted plot: [here](https://github.com/Leonidus1995/farmer-prices-forecasting/blob/main/plots/NeuralNet_true_vs_predicted.png)
 
 
-## SHAP (SHapley Additive exPlanations) Analysis
+## Cloud Deployment
 
-Working on it. Coming soon ....
+To make the trained LightGBM model accessible through a live interface, the deployment layer of this project was built as a two-service application: a **FastAPI backend** for model inference and a **Streamlit frontend** for user interaction. Both components were containerized with **Docker** and then deployed using **Microsoft Azure Container Apps**.
 
-## Model Cloud Deployment
+### FastAPI
 
-Working on it. Coming soon .....
+The FastAPI service serves as the prediction backend for the project. It loads the trained LightGBM model together with the processed reference dataset and exposes API endpoints that handle inference requests. The main prediction route accepts the selected **country**, **crop/item**, and **forecast year**, and returns the predicted **Producer Price Index (PPI)** value. The API also supports optional retrieval of recent historical PPI values so that the frontend can display past trends alongside the forecast.
+
+This backend layer separates model serving from the user interface, making the prediction system easier to maintain, test, and deploy independently of the frontend.
+
+### Streamlit UI App
+
+The Streamlit app provides the interactive user-facing layer of the project. It allows a user to select a country and commodity, submit the request to the FastAPI backend, and view the predicted 2023 PPI directly in the browser. When historical values are requested, the app also displays recent PPI history and a simple trend visualization to place the forecast in context.
+
+This interface was designed as a lightweight demonstration app so that the model can be explored without needing to run notebooks or interact with the API manually.
+
+### Microsoft Azure Container Apps Deployment
+
+The FastAPI backend and Streamlit frontend were deployed as containerized services using **Microsoft Azure Container Apps**. This deployment approach made it possible to host the application online without managing virtual machines or a full Kubernetes setup, while still keeping the backend and frontend as separate deployable components.
+
+The live demo of the deployed application is available here:
+
+**Demo App:**  
+https://ca-ppi-ui.jollycliff-8688dec6.eastus.azurecontainerapps.io
+
+Deployment-related files, including the FastAPI app, Streamlit app, Dockerfiles, and compose configuration, are available in the [Deployment](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/Deployment) folder.
 
 
 
