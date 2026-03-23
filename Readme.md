@@ -12,6 +12,8 @@ https://ca-ppi-ui.jollycliff-8688dec6.eastus.azurecontainerapps.io
 - **Takeaway:** Cross-sectional tree-based models on carefully imputed features add clear value over simple historical averages, especially for mid-range prices, but accurately forecasting extreme PPI spikes remains challenging.
 
 
+## Introduction
+
 Predicting agricultural Producer Price Index (PPI) for the year 2023 across countries and crops using multi-panel FAOSTAT data.
 
 This project develops a structured workflow to clean, integrate, and impute a global dataset of agronomic, trade, economic, and environmental indicators, then applies machine-learning and deep-learning models to predict PPI and assess the relative importance of predictors influencing price variation.
