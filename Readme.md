@@ -3,7 +3,7 @@
 **Demo App:**  
 https://ca-ppi-ui.jollycliff-8688dec6.eastus.azurecontainerapps.io
 
-### TL;DR
+### Project Summary
 
 - **Goal:** Predict 2023 Producer Price Index (PPI) for major crops by country using multi-panel FAOSTAT data combining agronomic, trade, macroeconomic, input, and climate indicators.
 - **Data:** 2001–2023 panel cleaned in Pandas and integrated in PostgreSQL; missingness handled via a structured imputation pipeline (rule-based + LightGBM/KNN/TVAE) with explicit quality thresholds for keeping imputed features.
@@ -51,6 +51,7 @@ This project develops a structured workflow to clean, integrate, and impute a gl
 
     - Neural Net: RMSE = 177.49, MAE = 67.52, R² = 0.157
 
+- **Cloud Deployment:** [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/Deployment)
 
 - **Figures/Plots:** [here](https://github.com/Leonidus1995/farmer-prices-forecasting/tree/main/plots)
 
