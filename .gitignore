@@ -17,3 +17,7 @@ FAOSTAT_region_wise_countries.csv
 *.csv
 
 *.docx
+
+*.log
+
+*.pyc
